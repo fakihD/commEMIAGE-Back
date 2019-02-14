@@ -1,4 +1,4 @@
-/*const assert = require('assert');
+const assert = require('assert');
 const AdministrateurChar = require('../models/administrateur');
 //describe tests
 describe('saving records', function(){
@@ -19,4 +19,4 @@ describe('saving records', function(){
 
   });
 
-});*/
+});
