@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 before(function(done){
 
   //Connect to mongodb
-  mongoose.connect('mongodb://localhost/comemiage');// on précise où on veut enregistrer nos records
+  mongoose.connect('mongodb://localhost/COMMEMIAGE');// on précise où on veut enregistrer nos records
   mongoose.connection.once('open',function(){
     console.log('connection has been made');
     done();

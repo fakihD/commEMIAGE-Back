@@ -1,4 +1,4 @@
-const assert = require('assert');
+/*const assert = require('assert');
 const MarioChar = require('../models/mariochar');
 //describe tests
 describe('saving records', function(){
@@ -17,4 +17,4 @@ describe('saving records', function(){
 
   });
 
-});
+});*/
