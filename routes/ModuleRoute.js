@@ -2,6 +2,8 @@ express = require('express');
 mongoose = require('mongoose');
 app = express();
 
+ObjectId = mongoose.Types.ObjectId;
+
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
 let bodyParser = require('body-parser');
@@ -68,13 +70,13 @@ app.post(lienAjouter, function (req, res) {
 app.put(lienModifier, function (req, res) {
     console.log("Module - UPDATE");
     
-    mongoose.model('Module').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedModule)=>{
+    mongoose.model('Module').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedModule)=>{
        if(err){
             console.log("Module - UPDATE : Error");
 
             res.redirect(lienErreur);
        }else{
-            console.log("Module - UPDATE : Done");
+            console.log("Module - UPDATE : " + updatedModule);
 
             res.redirect(lienAll);
        }
@@ -87,7 +89,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Module - DELETE id : " + req.params.id);
     
     let Module = mongoose.model('Module');
-    Module.find({id : req.params.id}).deleteOne().then(()=>{
+    Module.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Module - DELETE : Done");
 
         res.redirect(lienAll);
@@ -101,11 +103,11 @@ app.delete(lienSupprimer, function (req, res) {
 // -- READ
 app.get(lienGet, function (req, res) {
     console.log("Module - READ");
-    console.log("Module - READ id : " + req.params.id);
-    
-    mongoose.model('Module').findOne({id : req.params.id}).then((module)=>{
+    console.log("Module - READ id : " + new ObjectId(req.params.id));
+
+    mongoose.model('Module').findOne({_id : new ObjectId(req.params.id)}).then((module)=>{
         if(module){
-            console.log("Module - READ : Done");
+            console.log("Module - READ : " + module);
 
             res.render(pageModule, module);
         }else{

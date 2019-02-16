@@ -2,6 +2,8 @@ express = require('express');
 mongoose = require('mongoose');
 app = express();
 
+ObjectId = mongoose.Types.ObjectId;
+
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
 let bodyParser = require('body-parser');
@@ -68,13 +70,13 @@ app.post(lienAjouter, function (req, res) {
 app.put(lienModifier, function (req, res) {
     console.log("Apprenant - UPDATE");
     
-    mongoose.model('Apprenant').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedApprenant)=>{
+    mongoose.model('Apprenant').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedApprenant)=>{
        if(err){
             console.log("Apprenant - UPDATE : Error");
 
             res.redirect(lienErreur);
        }else{
-            console.log("Apprenant - UPDATE : Done");
+            console.log("Apprenant - UPDATE : " + updatedApprenant);
 
             res.redirect(lienAll);
        }
@@ -87,7 +89,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Apprenant - DELETE id : " + req.params.id);
     
     let Apprenant = mongoose.model('Apprenant');
-    Apprenant.find({id : req.params.id}).deleteOne().then(()=>{
+    Apprenant.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Apprenant - DELETE : Done");
 
         res.redirect(lienAll);
@@ -101,11 +103,11 @@ app.delete(lienSupprimer, function (req, res) {
 // -- READ
 app.get(lienGet, function (req, res) {
     console.log("Apprenant - READ");
-    console.log("Apprenant - READ id : " + req.params.id);
-    
-    mongoose.model('Apprenant').findOne({id : req.params.id}).then((apprenant)=>{
+    console.log("Apprenant - READ id : " + new ObjectId(req.params.id));
+
+    mongoose.model('Apprenant').findOne({_id : new ObjectId(req.params.id)}).then((apprenant)=>{
         if(apprenant){
-            console.log("Apprenant - READ : Done");
+            console.log("Apprenant - READ : " + apprenant);
 
             res.render(pageApprenant, apprenant);
         }else{

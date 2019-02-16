@@ -2,6 +2,8 @@ express = require('express');
 mongoose = require('mongoose');
 app = express();
 
+ObjectId = mongoose.Types.ObjectId;
+
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
 let bodyParser = require('body-parser');
@@ -68,13 +70,13 @@ app.post(lienAjouter, function (req, res) {
 app.put(lienModifier, function (req, res) {
     console.log("Utilisateur - UPDATE");
     
-    mongoose.model('Utilisateur').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedUtilisateur)=>{
+    mongoose.model('Utilisateur').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedUtilisateur)=>{
        if(err){
             console.log("Utilisateur - UPDATE : Error");
 
             res.redirect(lienErreur);
        }else{
-            console.log("Utilisateur - UPDATE : Done");
+            console.log("Utilisateur - UPDATE : " + updatedUtilisateur);
 
             res.redirect(lienAll);
        }
@@ -87,7 +89,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Utilisateur - DELETE id : " + req.params.id);
     
     let Utilisateur = mongoose.model('Utilisateur');
-    Utilisateur.find({id : req.params.id}).deleteOne().then(()=>{
+    Utilisateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Utilisateur - DELETE : Done");
 
         res.redirect(lienAll);
@@ -101,11 +103,11 @@ app.delete(lienSupprimer, function (req, res) {
 // -- READ
 app.get(lienGet, function (req, res) {
     console.log("Utilisateur - READ");
-    console.log("Utilisateur - READ id : " + req.params.id);
-    
-    mongoose.model('Utilisateur').findOne({id : req.params.id}).then((utilisateur)=>{
+    console.log("Utilisateur - READ id : " + new ObjectId(req.params.id));
+
+    mongoose.model('Utilisateur').findOne({_id : new ObjectId(req.params.id)}).then((utilisateur)=>{
         if(utilisateur){
-            console.log("Utilisateur - READ : Done");
+            console.log("Utilisateur - READ : " + utilisateur);
 
             res.render(pageUtilisateur, utilisateur);
         }else{

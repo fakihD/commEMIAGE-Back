@@ -2,6 +2,8 @@ express = require('express');
 mongoose = require('mongoose');
 app = express();
 
+ObjectId = mongoose.Types.ObjectId;
+
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
 let bodyParser = require('body-parser');
@@ -68,13 +70,13 @@ app.post(lienAjouter, function (req, res) {
 app.put(lienModifier, function (req, res) {
     console.log("Suivi - UPDATE");
     
-    mongoose.model('Suivi').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedSuivi)=>{
+    mongoose.model('Suivi').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedSuivi)=>{
        if(err){
             console.log("Suivi - UPDATE : Error");
 
             res.redirect(lienErreur);
        }else{
-            console.log("Suivi - UPDATE : Done");
+            console.log("Suivi - UPDATE : " + updatedSuivi);
 
             res.redirect(lienAll);
        }
@@ -87,7 +89,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Suivi - DELETE id : " + req.params.id);
     
     let Suivi = mongoose.model('Suivi');
-    Suivi.find({id : req.params.id}).deleteOne().then(()=>{
+    Suivi.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Suivi - DELETE : Done");
 
         res.redirect(lienAll);
@@ -101,11 +103,11 @@ app.delete(lienSupprimer, function (req, res) {
 // -- READ
 app.get(lienGet, function (req, res) {
     console.log("Suivi - READ");
-    console.log("Suivi - READ id : " + req.params.id);
-    
-    mongoose.model('Suivi').findOne({id : req.params.id}).then((suivi)=>{
+    console.log("Suivi - READ id : " + new ObjectId(req.params.id));
+
+    mongoose.model('Suivi').findOne({_id : new ObjectId(req.params.id)}).then((suivi)=>{
         if(suivi){
-            console.log("Suivi - READ : Done");
+            console.log("Suivi - READ : " + suivi);
 
             res.render(pageSuivi, suivi);
         }else{
