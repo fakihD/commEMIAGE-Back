@@ -1,4 +1,5 @@
-express = require('express'),
+express = require('express');
+mongoose = require('mongoose');
 app = express();
 
 // --- middleware
@@ -23,35 +24,58 @@ pageApprenant = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
+    console.log("Apprenant - ERROR");
+
     res.render(pageErreur);
 })
 
 // -- FIND ALL
 app.get(lienAll, function (req, res) {
+    console.log("Apprenant - FIND ALL");
+
     let Apprenant = mongoose.model('Apprenant');
     Apprenant.find().then((apprenants)=>{
+        console.log("Apprenant - FIND ALL : " + apprenants);
+
         res.render(pageApprenants, apprenants);
+    },(err)=>{
+        console.log("Apprenant - FIND ALL : Error");
+
+        res.redirect(lienErreur);
     })
 });
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
+    console.log("Apprenant - CREATE");
+    console.log("Apprenant - CREATE :" + req.body.nom);
+
     let Apprenant = mongoose.model('Apprenant');
-    let newApprenant = new Apprenant(req.body);
+    let newApprenant = new Apprenant({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
     newApprenant.id = newApprenant._id;
 
     newApprenant.save().then(()=>{
+        console.log("Apprenant - CREATE : Done");
+
         res.redirect(lienAll);
     },(err)=>{
+        console.log("Apprenant - CREATE : Error");
+
         res.redirect(lienErreur);
     })
 });
 
 // -- UPDATE
 app.put(lienModifier, function (req, res) {
+    console.log("Apprenant - UPDATE");
+    
     mongoose.model('Apprenant').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedApprenant)=>{
        if(err){
+            console.log("Apprenant - UPDATE : Error");
+
             res.redirect(lienErreur);
        }else{
+            console.log("Apprenant - UPDATE : Done");
+
             res.redirect(lienAll);
        }
     });
@@ -59,25 +83,41 @@ app.put(lienModifier, function (req, res) {
 
 // -- DELETE
 app.delete(lienSupprimer, function (req, res) {
+    console.log("Apprenant - DELETE");
+    console.log("Apprenant - DELETE id : " + req.params.id);
+    
     let Apprenant = mongoose.model('Apprenant');
     Apprenant.find({id : req.params.id}).deleteOne().then(()=>{
+        console.log("Apprenant - DELETE : Done");
+
         res.redirect(lienAll);
     },(err)=>{
+        console.log("Apprenant - DELETE : Error");
+
         res.redirect(lienErreur);
     });
 });
 
 // -- READ
 app.get(lienGet, function (req, res) {
+    console.log("Apprenant - READ");
+    console.log("Apprenant - READ id : " + req.params.id);
+    
     mongoose.model('Apprenant').findOne({id : req.params.id}).then((apprenant)=>{
         if(apprenant){
+            console.log("Apprenant - READ : Done");
+
             res.render(pageApprenant, apprenant);
         }else{
+            console.log("Apprenant - READ : Inexistant");
+
             res.status(404).json({message : "Inexistant"});
         }
     },(err)=>{
+        console.log("Apprenant - READ : Error");
+
         res.redirect(lienErreur);
     });
 });
 
-module.exports = app;
+apprenant.exports = app;
