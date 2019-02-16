@@ -3,7 +3,7 @@ const mongoose 	= require('mongoose'),
     Schema	 	= mongoose.Schema;
 
 //------------------------------------------- Resources Schema
-let ModuleSchema = new Schema({
+ModuleSchema = new Schema({
     nom : String,
     coefficient : {type: Number, min: 0, default: 1},
     seuil : {type: Number, min: 0, default: 10},

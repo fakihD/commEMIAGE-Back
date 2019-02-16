@@ -1,25 +1,27 @@
 // ---- MANAGE DATABASE
-const mongoose = require('mongoose');
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-mongoose.connect("mongodb://localhost/COMEMIAGE",{
-    useNewUrlParser: true
-}).then(() => {
-    console.log('BDD: Connected')
-}).catch(e => {
-    console.log('BDD: Error connection');
-    console.log(e);
-});
-
 const app = express();
+
+//ES6 promises
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost:27017/COMMEMIAGE");
+var db = mongoose.connection;
+db.on('Error',console.error.bind(console, 'Error: erreur de connection à mongodb'));
+db.once('open', function(){
+  console.log("BDD: Connected")
+})
 
 //Body Parser
 let urlencodedParser = bodyParser.urlencoded({
     extended: true,
 });
 app.use(urlencodedParser);
-app.use(bodyParser.json());
+app.use(bodyParser.json({type:"*/*"}));
+
+app.listen(3010);
 
 //Définition des CORS
 app.use(function (req, res, next) {
@@ -30,7 +32,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/adminstrateurs',require('./routes/AdminstrateurRoute'));
+app.use('/administrateurs',require('./routes/AdministrateurRoute'));
 app.use('/apprenants',require('./routes/ApprenantRoute'));
 app.use('/evaluations',require('./routes/EvaluationRoute'));
 app.use('/filieres',require('./routes/FiliereRoute'));
@@ -39,5 +41,3 @@ app.use('/semestres',require('./routes/SemestreRoute'));
 app.use('/suivis',require('./routes/SuiviRoute'));
 app.use('/tuteurs',require('./routes/TuteurRoute'));
 app.use('/utilisateurs',require('./routes/UtilisateurRoute'));
-
-app.listen(3010);
