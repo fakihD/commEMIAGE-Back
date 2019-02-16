@@ -2,6 +2,8 @@ express = require('express');
 mongoose = require('mongoose');
 app = express();
 
+ObjectId = mongoose.Types.ObjectId;
+
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
 let bodyParser = require('body-parser');
@@ -68,13 +70,13 @@ app.post(lienAjouter, function (req, res) {
 app.put(lienModifier, function (req, res) {
     console.log("Administrateur - UPDATE");
     
-    mongoose.model('Administrateur').updateOne({id : req.params.id}, {$set : req.body}, (err, updatedAdministrateur)=>{
+    mongoose.model('Administrateur').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedAdministrateur)=>{
        if(err){
             console.log("Administrateur - UPDATE : Error");
 
             res.redirect(lienErreur);
        }else{
-            console.log("Administrateur - UPDATE : Done");
+            console.log("Administrateur - UPDATE : " + updatedAdministrateur);
 
             res.redirect(lienAll);
        }
@@ -87,7 +89,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Administrateur - DELETE id : " + req.params.id);
     
     let Administrateur = mongoose.model('Administrateur');
-    Administrateur.find({id : req.params.id}).deleteOne().then(()=>{
+    Administrateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Administrateur - DELETE : Done");
 
         res.redirect(lienAll);
@@ -101,11 +103,11 @@ app.delete(lienSupprimer, function (req, res) {
 // -- READ
 app.get(lienGet, function (req, res) {
     console.log("Administrateur - READ");
-    console.log("Administrateur - READ id : " + req.params.id);
-    
-    mongoose.model('Administrateur').findOne({id : req.params.id}).then((administrateur)=>{
+    console.log("Administrateur - READ id : " + new ObjectId(req.params.id));
+
+    mongoose.model('Administrateur').findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
         if(administrateur){
-            console.log("Administrateur - READ : Done");
+            console.log("Administrateur - READ : " + administrateur);
 
             res.render(pageAdministrateur, administrateur);
         }else{

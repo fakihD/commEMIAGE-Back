@@ -5,7 +5,6 @@
   "main": "server.js",
   "scripts": {
     "execution": "mocha"
-
   },
   "repository": {
     "type": "git",
