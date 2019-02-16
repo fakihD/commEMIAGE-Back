@@ -120,4 +120,4 @@ app.get(lienGet, function (req, res) {
     });
 });
 
-suivi.exports = app;
+module.exports = app;

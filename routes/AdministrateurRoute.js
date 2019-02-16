@@ -120,4 +120,4 @@ app.get(lienGet, function (req, res) {
     });
 });
 
-administrateur.exports = app;
+module.exports = app;
