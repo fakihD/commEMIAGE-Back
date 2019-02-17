@@ -1,28 +1,29 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Tuteur');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienGet = '/get/:id';
 
-pageErreur ='';
-pageTuteurs = '';
-pageTuteur = '';
+const pageErreur ='';
+const pageTuteurs = '';
+const pageTuteur = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +36,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Tuteur - FIND ALL");
 
-    let Tuteur = mongoose.model('Tuteur');
+    Tuteur = mongoose.model('Tuteur');
     Tuteur.find().then((tuteurs)=>{
         console.log("Tuteur - FIND ALL : " + tuteurs);
 
@@ -46,13 +47,14 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Tuteur - CREATE");
     console.log("Tuteur - CREATE :" + req.body.nom);
 
-    let Tuteur = mongoose.model('Tuteur');
-    let newTuteur = new Tuteur({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Tuteur = mongoose.model('Tuteur');
+    newTuteur = new Tuteur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
     newTuteur.id = newTuteur._id;
 
     newTuteur.save().then(()=>{
@@ -88,7 +90,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Tuteur - DELETE");
     console.log("Tuteur - DELETE id : " + req.params.id);
     
-    let Tuteur = mongoose.model('Tuteur');
+    Tuteur = mongoose.model('Tuteur');
     Tuteur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Tuteur - DELETE : Done");
 

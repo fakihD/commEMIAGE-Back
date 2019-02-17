@@ -4,8 +4,14 @@ const mongoose 	= require('mongoose'),
 
 //------------------------------------------- Resources Schema
 let FiliereSchema = new Schema({
-    nom : String,
-    description : String,
+    nom : {
+        type: String,
+        required: true
+    },
+    description : {
+        type: String,
+        required: true
+    },
     module : [{
             nom : String
     }],

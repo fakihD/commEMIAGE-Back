@@ -1,28 +1,29 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Apprenant');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienGet = '/get/:id';
 
-pageErreur ='';
-pageApprenants = '';
-pageApprenant = '';
+const pageErreur ='';
+const pageApprenants = '';
+const pageApprenant = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +36,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Apprenant - FIND ALL");
 
-    let Apprenant = mongoose.model('Apprenant');
+    Apprenant = mongoose.model('Apprenant');
     Apprenant.find().then((apprenants)=>{
         console.log("Apprenant - FIND ALL : " + apprenants);
 
@@ -46,13 +47,14 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Apprenant - CREATE");
     console.log("Apprenant - CREATE :" + req.body.nom);
 
-    let Apprenant = mongoose.model('Apprenant');
-    let newApprenant = new Apprenant({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Apprenant = mongoose.model('Apprenant');
+    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
     newApprenant.id = newApprenant._id;
 
     newApprenant.save().then(()=>{
@@ -88,7 +90,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Apprenant - DELETE");
     console.log("Apprenant - DELETE id : " + req.params.id);
     
-    let Apprenant = mongoose.model('Apprenant');
+    Apprenant = mongoose.model('Apprenant');
     Apprenant.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Apprenant - DELETE : Done");
 

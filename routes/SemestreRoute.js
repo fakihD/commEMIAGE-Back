@@ -1,28 +1,29 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Semestre');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienGet = '/get/:id';
 
-pageErreur ='';
-pageSemestres = '';
-pageSemestre = '';
+const pageErreur ='';
+const pageSemestres = '';
+const pageSemestre = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +36,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Semestre - FIND ALL");
 
-    let Semestre = mongoose.model('Semestre');
+    Semestre = mongoose.model('Semestre');
     Semestre.find().then((semestres)=>{
         console.log("Semestre - FIND ALL : " + semestres);
 
@@ -46,13 +47,14 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Semestre - CREATE");
     console.log("Semestre - CREATE :" + req.body.nom);
 
-    let Semestre = mongoose.model('Semestre');
-    let newSemestre = new Semestre({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Semestre = mongoose.model('Semestre');
+    newSemestre = new Semestre({nom:req.body.nom, dateDebut:req.body.dateDebut, dateFin:req.body.dateFin});
     newSemestre.id = newSemestre._id;
 
     newSemestre.save().then(()=>{
@@ -88,7 +90,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Semestre - DELETE");
     console.log("Semestre - DELETE id : " + req.params.id);
     
-    let Semestre = mongoose.model('Semestre');
+    Semestre = mongoose.model('Semestre');
     Semestre.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Semestre - DELETE : Done");
 

@@ -1,28 +1,29 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Suivi');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienGet = '/get/:id';
 
-pageErreur ='';
-pageSuivis = '';
-pageSuivi = '';
+const pageErreur ='';
+const pageSuivis = '';
+const pageSuivi = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +36,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Suivi - FIND ALL");
 
-    let Suivi = mongoose.model('Suivi');
+    Suivi = mongoose.model('Suivi');
     Suivi.find().then((suivis)=>{
         console.log("Suivi - FIND ALL : " + suivis);
 
@@ -46,13 +47,14 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Suivi - CREATE");
-    console.log("Suivi - CREATE :" + req.body.nom);
+    console.log("Suivi - CREATE :" + req.body.alias);
 
-    let Suivi = mongoose.model('Suivi');
-    let newSuivi = new Suivi({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Suivi = mongoose.model('Suivi');
+    newSuivi = new Suivi({alias:req.body.alias});
     newSuivi.id = newSuivi._id;
 
     newSuivi.save().then(()=>{
@@ -88,7 +90,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Suivi - DELETE");
     console.log("Suivi - DELETE id : " + req.params.id);
     
-    let Suivi = mongoose.model('Suivi');
+    Suivi = mongoose.model('Suivi');
     Suivi.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Suivi - DELETE : Done");
 

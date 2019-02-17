@@ -4,9 +4,22 @@ const mongoose 	= require('mongoose'),
 
 //------------------------------------------- Resources Schema
 ModuleSchema = new Schema({
-    nom : String,
-    coefficient : {type: Number, min: 0, default: 1},
-    seuil : {type: Number, min: 0, default: 10},
+    nom : {
+        type: String,
+        required: true
+    },
+    coefficient : {
+        type: Number,
+        min: 0,
+        default: 1,
+        required: true
+    },
+    seuil : {
+        type: Number,
+        min: 0,
+        default: 10,
+        required: true
+    },
     filiere : {type: Object, objectType: {
         nom: String
     }},
