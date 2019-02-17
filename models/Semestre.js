@@ -4,9 +4,18 @@ const mongoose 	= require('mongoose'),
 
 //------------------------------------------- Resources Schema
 let SemestreSchema = new Schema({
-    nom : String,
-    dateDebut : Date,
-    dateFin : Date,
+    nom : {
+        type: String,
+        required: true
+    },
+    dateDebut : {
+        type: Date,
+        required: true
+    },
+    dateFin : {
+        type: Date,
+        required: true
+    },
     module : [{
             nom : String
     }],

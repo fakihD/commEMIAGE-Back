@@ -1,28 +1,29 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Evaluation');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienGet = '/get/:id';
 
-pageErreur ='';
-pageEvaluations = '';
-pageEvaluation = '';
+const pageErreur ='';
+const pageEvaluations = '';
+const pageEvaluation = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +36,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Evaluation - FIND ALL");
 
-    let Evaluation = mongoose.model('Evaluation');
+    Evaluation = mongoose.model('Evaluation');
     Evaluation.find().then((evaluations)=>{
         console.log("Evaluation - FIND ALL : " + evaluations);
 
@@ -46,13 +47,14 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Evaluation - CREATE");
-    console.log("Evaluation - CREATE :" + req.body.nom);
+    console.log("Evaluation - CREATE :" + req.body.alias);
 
-    let Evaluation = mongoose.model('Evaluation');
-    let newEvaluation = new Evaluation({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Evaluation = mongoose.model('Evaluation');
+    newEvaluation = new Evaluation({alias:req.body.alias});
     newEvaluation.id = newEvaluation._id;
 
     newEvaluation.save().then(()=>{
@@ -88,7 +90,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Evaluation - DELETE");
     console.log("Evaluation - DELETE id : " + req.params.id);
     
-    let Evaluation = mongoose.model('Evaluation');
+    Evaluation = mongoose.model('Evaluation');
     Evaluation.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Evaluation - DELETE : Done");
 

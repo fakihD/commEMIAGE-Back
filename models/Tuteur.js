@@ -4,15 +4,29 @@ const mongoose 	= require('mongoose'),
 
 //------------------------------------------- Resources Schema
 let TuteurSchema = new Schema({
-    nom : {type: String, stringTransform: function(string) {
-        return string.toUpperCase();
-    }},
-    prenom : String,
-    adresse : String,
-    email : {type: String, unique: true, regex: new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")},
-    dateFormation : Date,
+    nom: {
+        type: String,
+        required: true,
+        stringTransform: function(string) {
+            return string.toUpperCase();
+        }
+    },
+    prenom : {
+        type: String,
+        required: true
+    },
+    adresse : {
+        type: String,
+        required: true
+    },
+    email : {
+        type: String,
+        unique: true,
+        required: true,
+        regex: new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+    },
     module : [{
-            nom : String
+        nom : String
     }],
     apprenant : [{
         nom : String,

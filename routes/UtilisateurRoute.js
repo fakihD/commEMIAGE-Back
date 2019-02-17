@@ -1,28 +1,31 @@
-express = require('express');
-mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+
 app = express();
 
 ObjectId = mongoose.Types.ObjectId;
 
 // --- middleware
 // - body-parser needed to catch and to treat information inside req.body
-let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // -- Load model needed for the project
 require('../models/Utilisateur');
 
-lienErreur = '/error';
-lienAll = '/';
-lienAjouter = '/add';
-lienModifier = '/update/:id';
-lienSupprimer = '/delete/:id';
-lienGet = '/get/:id';
+const lienErreur = '/error';
+const lienAll = '/';
+const lienAjouter = '/add';
+const lienModifier = '/update/:id';
+const lienSupprimer = '/delete/:id';
+const lienLogin = '/login/';
+const lienLogout = '/logout/';
 
-pageErreur ='';
-pageUtilisateurs = '';
-pageUtilisateur = '';
+const pageErreur ='';
+const pageUtilisateurs = '';
+const pageUtilisateur = '';
 
 // -- ERROR
 app.get(lienErreur, function(req, res) {
@@ -35,7 +38,7 @@ app.get(lienErreur, function(req, res) {
 app.get(lienAll, function (req, res) {
     console.log("Utilisateur - FIND ALL");
 
-    let Utilisateur = mongoose.model('Utilisateur');
+    Utilisateur = mongoose.model('Utilisateur');
     Utilisateur.find().then((utilisateurs)=>{
         console.log("Utilisateur - FIND ALL : " + utilisateurs);
 
@@ -46,13 +49,26 @@ app.get(lienAll, function (req, res) {
         res.redirect(lienErreur);
     })
 });
+
 // -- CREATE
 app.post(lienAjouter, function (req, res) {
     console.log("Utilisateur - CREATE");
-    console.log("Utilisateur - CREATE :" + req.body.nom);
+    console.log("Utilisateur - CREATE :" + req.body.email);
 
-    let Utilisateur = mongoose.model('Utilisateur');
-    let newUtilisateur = new Utilisateur({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+    Utilisateur = mongoose.model('Utilisateur');
+
+    password = req.body.password;
+    bcrypt.hash(password, 10, function (err, hash){
+        if (err) {
+            console.log("Utilisateur - CREATE - hashError : " + err);
+            return next(err);
+        }
+        console.log("Utilisateur - CREATE - hash : " + hash);
+        password = hash;
+        next();
+      })
+
+    newUtilisateur = new Utilisateur({role:req.body.role, email:req.body.email, password:password});
     newUtilisateur.id = newUtilisateur._id;
 
     newUtilisateur.save().then(()=>{
@@ -88,7 +104,7 @@ app.delete(lienSupprimer, function (req, res) {
     console.log("Utilisateur - DELETE");
     console.log("Utilisateur - DELETE id : " + req.params.id);
     
-    let Utilisateur = mongoose.model('Utilisateur');
+    Utilisateur = mongoose.model('Utilisateur');
     Utilisateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Utilisateur - DELETE : Done");
 
@@ -100,26 +116,34 @@ app.delete(lienSupprimer, function (req, res) {
     });
 });
 
-// -- READ
-app.get(lienGet, function (req, res) {
-    console.log("Utilisateur - READ");
-    console.log("Utilisateur - READ id : " + new ObjectId(req.params.id));
+// -- CONNECT
+app.post(lienLogin, function (req, res) {
+    console.log("Utilisateur - CONNECT");
+    console.log("Utilisateur - CONNECT id : " + new ObjectId(req.body.email));
 
-    mongoose.model('Utilisateur').findOne({_id : new ObjectId(req.params.id)}).then((utilisateur)=>{
-        if(utilisateur){
-            console.log("Utilisateur - READ : " + utilisateur);
-
-            res.render(pageUtilisateur, utilisateur);
-        }else{
-            console.log("Utilisateur - READ : Inexistant");
-
-            res.status(404).json({message : "Inexistant"});
-        }
-    },(err)=>{
-        console.log("Utilisateur - READ : Error");
-
-        res.redirect(lienErreur);
-    });
+    if (req.body.email && req.body.password && req.body.passwordConf) {
+        mongoose.model('Utilisateur').findOne({email : req.body.email}).exec(function (err, utilisateur) {
+            if (err) {
+                console.log("Utilisateur - CONNECT : Error");
+        
+                res.redirect(lienErreur);
+            } else if (!utilisateur) {
+                var err = new Error('User not found.');
+                console.log("Utilisateur - CONNECT : Error " + err);
+        
+                res.redirect(lienErreur);
+            }
+            bcrypt.compare(req.body.password, utilisateur.password, function (err, result) {
+                if (result === true) {
+                    console.log("Utilisateur - CONNECT : " + utilisateur);
+                    return callback(null, utilisateur);
+                } else {
+                    console.log("Utilisateur - CONNECT : password different");
+                    return callback();
+                }
+            })
+        });
+    }
 });
 
 module.exports = app;
