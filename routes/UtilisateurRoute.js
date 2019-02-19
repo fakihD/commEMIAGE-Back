@@ -42,7 +42,7 @@ app.get(lienAll, function (req, res) {
     Utilisateur.find().then((utilisateurs)=>{
         console.log("Utilisateur - FIND ALL : " + utilisateurs);
 
-        res.render(pageUtilisateurs, utilisateurs);
+        res.send(utilisateurs);
     },(err)=>{
         console.log("Utilisateur - FIND ALL : Error");
 

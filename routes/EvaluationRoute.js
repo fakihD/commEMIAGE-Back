@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Evaluation.find().then((evaluations)=>{
         console.log("Evaluation - FIND ALL : " + evaluations);
 
-        res.render(pageEvaluations, evaluations);
+        res.send(evaluations);
     },(err)=>{
         console.log("Evaluation - FIND ALL : Error");
 

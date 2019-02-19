@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Suivi.find().then((suivis)=>{
         console.log("Suivi - FIND ALL : " + suivis);
 
-        res.render(pageSuivis, suivis);
+        res.send(suivis);
     },(err)=>{
         console.log("Suivi - FIND ALL : Error");
 

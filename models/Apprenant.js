@@ -27,13 +27,11 @@ let ApprenantSchema = new Schema({
   },
   dateFormation : {
     type: Date,
+    default: Date.now,
     required: true
   },
   filiere : {
-    type: Object, 
-    objectType: {
       nom: String
-    }
   },
   semestre : [{
         nom : String

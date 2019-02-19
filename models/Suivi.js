@@ -5,17 +5,17 @@ const mongoose 	= require('mongoose'),
 //------------------------------------------- Resources Schema
 let SuiviSchema = new Schema({
     alias : String,
-    tuteur : {type: Object, objectType: {
+    tuteur : {
         nom : String,
         prenom : String
-    }},
-    apprenant : {type: Object, objectType: {
+    },
+    apprenant : {
         nom : String,
         prenom : String
-    }},
-    module : {type: Object, objectType: {
+    },
+    module : {
         nom : String
-    }},
+    },
 });
 
 let Suivi = mongoose.model('Suivi', SuiviSchema);
