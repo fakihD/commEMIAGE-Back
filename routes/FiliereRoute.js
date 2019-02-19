@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Filiere.find().then((filieres)=>{
         console.log("Filiere - FIND ALL : " + filieres);
 
-        res.render(pageFilieres, filieres);
+        res.send(filieres);
     },(err)=>{
         console.log("Filiere - FIND ALL : Error");
 

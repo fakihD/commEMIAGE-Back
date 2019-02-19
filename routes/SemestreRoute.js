@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Semestre.find().then((semestres)=>{
         console.log("Semestre - FIND ALL : " + semestres);
 
-        res.render(pageSemestres, semestres);
+        res.send(semestres);
     },(err)=>{
         console.log("Semestre - FIND ALL : Error");
 

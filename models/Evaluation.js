@@ -9,17 +9,17 @@ let EvaluationSchema = new Schema({
     controleTerminal : {type: Number, min: 0, default: 1},
     commentaireTuteur : String,
     commentaireApprenant : String,
-    tuteur : {type: Object, objectType: {
+    tuteur : {
         nom : String,
         prenom : String
-    }},
-    apprenant : {type: Object, objectType: {
+    },
+    apprenant : {
         nom : String,
         prenom : String
-    }},
-    module : {type: Object, objectType: {
+    },
+    module : {
         nom : String
-    }},
+    }
 });
 
 let Evaluation = mongoose.model('Evaluation', EvaluationSchema);

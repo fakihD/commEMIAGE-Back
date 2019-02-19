@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Apprenant.find().then((apprenants)=>{
         console.log("Apprenant - FIND ALL : " + apprenants);
 
-        res.render(pageApprenants, apprenants);
+        res.send(apprenants);
     },(err)=>{
         console.log("Apprenant - FIND ALL : Error");
 
@@ -54,7 +54,7 @@ app.post(lienAjouter, function (req, res) {
     console.log("Apprenant - CREATE :" + req.body.nom);
 
     Apprenant = mongoose.model('Apprenant');
-    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
+    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, filiere:req.body.filiere});
     newApprenant.id = newApprenant._id;
 
     newApprenant.save().then(()=>{

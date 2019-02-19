@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Administrateur.find().then((administrateurs)=>{
         console.log("Administrateur - FIND ALL : " + administrateurs);
 
-        res.render(pageAdministrateurs, administrateurs);
+        res.send(administrateurs);
     },(err)=>{
         console.log("Administrateur - FIND ALL : Error");
 

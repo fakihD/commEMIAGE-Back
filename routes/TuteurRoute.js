@@ -40,7 +40,7 @@ app.get(lienAll, function (req, res) {
     Tuteur.find().then((tuteurs)=>{
         console.log("Tuteur - FIND ALL : " + tuteurs);
 
-        res.render(pageTuteurs, tuteurs);
+        res.send(tuteurs);
     },(err)=>{
         console.log("Tuteur - FIND ALL : Error");
 
