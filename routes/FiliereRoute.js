@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Filiere - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -54,17 +54,17 @@ app.post(lienAjouter, function (req, res) {
     console.log("Filiere - CREATE :" + req.body.nom);
 
     Filiere = mongoose.model('Filiere');
-    newFiliere = new Filiere({nom:req.body.nom, description:req.body.description});
+    newFiliere = new Filiere({nom:req.body.nom, description:req.body.description, module:req.body.module});
     newFiliere.id = newFiliere._id;
 
     newFiliere.save().then(()=>{
         console.log("Filiere - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Filiere - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,11 +76,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Filiere - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Filiere - UPDATE : " + updatedFiliere);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,11 +94,11 @@ app.delete(lienSupprimer, function (req, res) {
     Filiere.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Filiere - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Filiere - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(filiere){
             console.log("Filiere - READ : " + filiere);
 
-            res.render(pageFiliere, filiere);
+            res.send(filiere);
         }else{
             console.log("Filiere - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Filiere - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

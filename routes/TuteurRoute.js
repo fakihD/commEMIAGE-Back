@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Tuteur - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -64,7 +64,7 @@ app.post(lienAjouter, function (req, res) {
     },(err)=>{
         console.log("Tuteur - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,7 +76,7 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Tuteur - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Tuteur - UPDATE : " + updatedTuteur);
 
@@ -98,7 +98,7 @@ app.delete(lienSupprimer, function (req, res) {
     },(err)=>{
         console.log("Tuteur - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(tuteur){
             console.log("Tuteur - READ : " + tuteur);
 
-            res.render(pageTuteur, tuteur);
+            res.send(tuteur);
         }else{
             console.log("Tuteur - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Tuteur - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

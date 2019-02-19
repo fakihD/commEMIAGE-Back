@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Evaluation - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -60,11 +60,11 @@ app.post(lienAjouter, function (req, res) {
     newEvaluation.save().then(()=>{
         console.log("Evaluation - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Evaluation - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,11 +76,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Evaluation - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Evaluation - UPDATE : " + updatedEvaluation);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,11 +94,11 @@ app.delete(lienSupprimer, function (req, res) {
     Evaluation.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Evaluation - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Evaluation - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(evaluation){
             console.log("Evaluation - READ : " + evaluation);
 
-            res.render(pageEvaluation, evaluation);
+            res.send(evaluation);
         }else{
             console.log("Evaluation - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Evaluation - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

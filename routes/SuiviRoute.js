@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Suivi - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -60,11 +60,11 @@ app.post(lienAjouter, function (req, res) {
     newSuivi.save().then(()=>{
         console.log("Suivi - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Suivi - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,11 +76,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Suivi - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Suivi - UPDATE : " + updatedSuivi);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,11 +94,11 @@ app.delete(lienSupprimer, function (req, res) {
     Suivi.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Suivi - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Suivi - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(suivi){
             console.log("Suivi - READ : " + suivi);
 
-            res.render(pageSuivi, suivi);
+            res.send(suivi);
         }else{
             console.log("Suivi - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Suivi - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

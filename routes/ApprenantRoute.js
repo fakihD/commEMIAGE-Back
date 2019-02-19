@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Apprenant - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -60,11 +60,11 @@ app.post(lienAjouter, function (req, res) {
     newApprenant.save().then(()=>{
         console.log("Apprenant - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Apprenant - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,11 +76,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Apprenant - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Apprenant - UPDATE : " + updatedApprenant);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,11 +94,11 @@ app.delete(lienSupprimer, function (req, res) {
     Apprenant.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Apprenant - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Apprenant - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(apprenant){
             console.log("Apprenant - READ : " + apprenant);
 
-            res.render(pageApprenant, apprenant);
+            res.send(apprenant);
         }else{
             console.log("Apprenant - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Apprenant - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

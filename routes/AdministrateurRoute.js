@@ -44,7 +44,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Administrateur - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -60,11 +60,11 @@ app.post(lienAjouter, function (req, res) {
     newAdministrateur.save().then(()=>{
         console.log("Administrateur - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Administrateur - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -76,11 +76,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Administrateur - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Administrateur - UPDATE : " + updatedAdministrateur);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,11 +94,11 @@ app.delete(lienSupprimer, function (req, res) {
     Administrateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Administrateur - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Administrateur - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -111,16 +111,16 @@ app.get(lienGet, function (req, res) {
         if(administrateur){
             console.log("Administrateur - READ : " + administrateur);
 
-            res.render(pageAdministrateur, administrateur);
+            res.send(administrateur);
         }else{
             console.log("Administrateur - READ : Inexistant");
 
-            res.status(404).json({message : "Inexistant"});
+            res.send("Inexistant");
         }
     },(err)=>{
         console.log("Administrateur - READ : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 

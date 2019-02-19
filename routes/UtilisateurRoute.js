@@ -46,7 +46,7 @@ app.get(lienAll, function (req, res) {
     },(err)=>{
         console.log("Utilisateur - FIND ALL : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -74,11 +74,11 @@ app.post(lienAjouter, function (req, res) {
     newUtilisateur.save().then(()=>{
         console.log("Utilisateur - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Utilisateur - CREATE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     })
 });
 
@@ -90,11 +90,11 @@ app.put(lienModifier, function (req, res) {
        if(err){
             console.log("Utilisateur - UPDATE : Error");
 
-            res.redirect(lienErreur);
+            res.send("Erreur");
        }else{
             console.log("Utilisateur - UPDATE : " + updatedUtilisateur);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -108,11 +108,11 @@ app.delete(lienSupprimer, function (req, res) {
     Utilisateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Utilisateur - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Utilisateur - DELETE : Error");
 
-        res.redirect(lienErreur);
+        res.send("Erreur");
     });
 });
 
@@ -126,12 +126,12 @@ app.post(lienLogin, function (req, res) {
             if (err) {
                 console.log("Utilisateur - CONNECT : Error");
         
-                res.redirect(lienErreur);
+                res.send("Erreur");
             } else if (!utilisateur) {
                 var err = new Error('User not found.');
                 console.log("Utilisateur - CONNECT : Error " + err);
         
-                res.redirect(lienErreur);
+                res.send("Erreur");
             }
             bcrypt.compare(req.body.password, utilisateur.password, function (err, result) {
                 if (result === true) {
@@ -142,6 +142,7 @@ app.post(lienLogin, function (req, res) {
                     return callback();
                 }
             })
+            res.send(utilisateur);
         });
     }
 });
