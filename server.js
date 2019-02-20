@@ -41,3 +41,24 @@ app.use('/semestres',require('./routes/SemestreRoute'));
 app.use('/suivis',require('./routes/SuiviRoute'));
 app.use('/tuteurs',require('./routes/TuteurRoute'));
 app.use('/utilisateurs',require('./routes/UtilisateurRoute'));
+
+require('./models/Semestre');
+
+createSemestre = function(nom, debut, fin){
+  Semestre = mongoose.model('Semestre');
+
+  newSemestre = new Semestre({nom:nom, dateDebut:debut, dateFin:fin});
+
+  newSemestre.save().then(()=>{
+      console.log("Semestre - CREATE : Done");
+  },(err)=>{
+      console.log("Semestre - CREATE : Error :" + err);
+  })
+}
+
+/*createSemestre("2019 Semestre 1", new Date('January 01, 2019 00:00:00'), new Date('June 30, 2019 00:00:00'));
+createSemestre("2019 Semestre 2", new Date('July 01, 2019 00:00:00'), new Date('December 31, 2019 00:00:00'));
+createSemestre("2020 Semestre 1", new Date('January 01, 2019 00:00:00'), new Date('June 30, 2019 00:00:00'));
+createSemestre("2020 Semestre 2", new Date('July 01, 2019 00:00:00'), new Date('December 31, 2019 00:00:00'));
+createSemestre("2021 Semestre 1", new Date('January 01, 2019 00:00:00'), new Date('June 30, 2019 00:00:00'));
+createSemestre("2021 Semestre 2", new Date('July 01, 2019 00:00:00'), new Date('December 31, 2019 00:00:00')); */

@@ -15,10 +15,7 @@ let SemestreSchema = new Schema({
     dateFin : {
         type: Date,
         required: true
-    },
-    module : [{
-            nom : String
-    }],
+    }
 });
 
 let Semestre = mongoose.model('Semestre', SemestreSchema);

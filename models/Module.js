@@ -21,14 +21,23 @@ ModuleSchema = new Schema({
         required: true
     },
     filiere : {
-        nom: String
+        nom : String
     },
     tuteur : {
+        tuteurId : String,
         nom : String,
         prenom : String
     },
     semestre : {
-        nom : String
+        nom : String,
+        dateDebut : {
+            type: Date,
+            required: true
+        },
+        dateFin : {
+            type: Date,
+            required: true
+        }
     }
 });
 
