@@ -52,19 +52,20 @@ app.get(lienAll, function (req, res) {
 app.post(lienAjouter, function (req, res) {
     console.log("Tuteur - CREATE");
     console.log("Tuteur - CREATE :" + req.body.nom);
+    console.log("Tuteur - CREATE :" + req.body.module);
 
     Tuteur = mongoose.model('Tuteur');
-    newTuteur = new Tuteur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
+    newTuteur = new Tuteur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, module:req.body.module});
     newTuteur.id = newTuteur._id;
 
     newTuteur.save().then(()=>{
         console.log("Tuteur - CREATE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
-        console.log("Tuteur - CREATE : Error");
+        console.log("Tuteur - CREATE : Error - " + err);
 
-        res.send("Erreur");
+        res.send("Erreur:" + err);
     })
 });
 
@@ -80,7 +81,7 @@ app.put(lienModifier, function (req, res) {
        }else{
             console.log("Tuteur - UPDATE : " + updatedTuteur);
 
-            res.redirect(lienAll);
+            res.send("Done");
        }
     });
 });
@@ -94,7 +95,7 @@ app.delete(lienSupprimer, function (req, res) {
     Tuteur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
         console.log("Tuteur - DELETE : Done");
 
-        res.redirect(lienAll);
+        res.send("Done");
     },(err)=>{
         console.log("Tuteur - DELETE : Error");
 

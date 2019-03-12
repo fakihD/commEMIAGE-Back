@@ -32,11 +32,9 @@ ModuleSchema = new Schema({
         nom : String,
         dateDebut : {
             type: Date,
-            required: true
         },
         dateFin : {
             type: Date,
-            required: true
         }
     }
 });
