@@ -10,10 +10,12 @@ let EvaluationSchema = new Schema({
     commentaireTuteur : String,
     commentaireApprenant : String,
     tuteur : {
+        tuteurId : String,
         nom : String,
         prenom : String
     },
     apprenant : {
+        apprenantId : String,
         nom : String,
         prenom : String
     },

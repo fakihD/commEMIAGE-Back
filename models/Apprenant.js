@@ -31,21 +31,30 @@ let ApprenantSchema = new Schema({
     required: true
   },
   filiere : {
+      filiereId: String,
       nom: String
   },
   semestre : [{
-        nom : String
+        nom : String,
+        dateDebut : {
+            type: Date,
+            required: true
+        },
+        dateFin : {
+            type: Date,
+            required: true
+        },
+        module : [{
+              nom : String,
+              evaluation : [{
+                    alias : String,
+              }],
+              suivi : [{
+                    alias : String,
+              }]
+        }]
   }],
-  module : [{
-        nom : String
-  }],
-  evaluation : [{
-        alias : String,
-  }],
-  suivi : [{
-        alias : String,
-  }]
-  });
+});
 
 let Apprenant = mongoose.model('Apprenant', ApprenantSchema);
 module.exports = Apprenant;

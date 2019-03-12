@@ -17,6 +17,7 @@ require('../models/Module');
 const lienErreur = '/error';
 const lienAll = '/';
 const lienAjouter = '/add';
+const lienModifierAll = '/update';
 const lienModifier = '/update/:id';
 const lienSupprimer = '/delete/:id';
 const lienGet = '/get/:id';
@@ -62,7 +63,7 @@ app.post(lienAjouter, function (req, res) {
 
         res.send("Done");
     },(err)=>{
-        console.log("Module - CREATE : Error");
+        console.log("Module - CREATE : Error: " + err);
 
         res.send("Erreur");
     })
@@ -82,6 +83,25 @@ app.put(lienModifier, function (req, res) {
 
             res.send("Done");
        }
+    });
+});
+
+// -- UPDATE ALL
+app.put(lienModifierAll, function (req, res) {
+    console.log("Module - UPDATE ALL");
+    
+    req.body.module.forEach(function(module){
+        mongoose.model('Module').updateOne({_id : new ObjectId(module._id)}, {$set : module}, (err, updatedModule)=>{
+           if(err){
+                console.log("Module - UPDATE : Error");
+    
+                res.send("Erreur");
+           }else{
+                console.log("Module - UPDATE : " + updatedModule);
+    
+                res.send("Done");
+           }
+        });
     });
 });
 

@@ -54,7 +54,7 @@ app.post(lienAjouter, function (req, res) {
     console.log("Apprenant - CREATE :" + req.body.nom);
 
     Apprenant = mongoose.model('Apprenant');
-    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, filiere:req.body.filiere});
+    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, filiere:req.body.filiere, semestre:req.body.semestre});
     newApprenant.id = newApprenant._id;
 
     newApprenant.save().then(()=>{
@@ -71,14 +71,15 @@ app.post(lienAjouter, function (req, res) {
 // -- UPDATE
 app.put(lienModifier, function (req, res) {
     console.log("Apprenant - UPDATE");
+    console.log("Apprenant - UPDATE id:" + JSON.stringify(req.body.apprenant));
     
-    mongoose.model('Apprenant').updateOne({_id : new ObjectId(req.params.id)}, {$set : req.body}, (err, updatedApprenant)=>{
+    mongoose.model('Apprenant').updateOne({_id : new ObjectId(req.body.apprenant._id)}, {$set : req.body.apprenant}, (err, updatedApprenant)=>{
        if(err){
             console.log("Apprenant - UPDATE : Error");
 
             res.send("Erreur");
        }else{
-            console.log("Apprenant - UPDATE : " + updatedApprenant);
+            console.log("Apprenant - UPDATE : " + JSON.stringify(updatedApprenant));
 
             res.send("Done");
        }

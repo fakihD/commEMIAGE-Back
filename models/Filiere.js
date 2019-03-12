@@ -16,6 +16,7 @@ let FiliereSchema = new Schema({
             nom : String
     }],
     apprenant : [{
+        apprenantId : String,
         nom : String,
         prenom : String
     }]
