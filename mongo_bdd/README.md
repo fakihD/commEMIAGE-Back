@@ -1,1 +1,0 @@
-# commEMIAGE-Back : MONGO_BDD - Ce dossier contient les données de la BDD sauvegardées au format JSON.
