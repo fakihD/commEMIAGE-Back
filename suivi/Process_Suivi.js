@@ -94,7 +94,7 @@ function processRead (req) {
             if(suivi){
                 console.log("Process : Suivi - READ : " + suivi);
 
-                reject(suivi);
+                resolve(suivi);
             }else{
                 console.log("Process : Suivi - READ : Inexistant");
 

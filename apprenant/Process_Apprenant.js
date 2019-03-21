@@ -94,7 +94,7 @@ function processRead (req) {
             if(apprenant){
                 console.log("Process : Apprenant - READ : " + apprenant);
 
-                reject(apprenant);
+                resolve(apprenant);
             }else{
                 console.log("Process : Apprenant - READ : Inexistant");
 

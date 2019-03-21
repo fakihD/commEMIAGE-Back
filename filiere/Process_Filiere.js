@@ -94,7 +94,7 @@ function processRead (req) {
             if(filiere){
                 console.log("Process : Filiere - READ : " + filiere);
 
-                reject(filiere);
+                resolve(filiere);
             }else{
                 console.log("Process : Filiere - READ : Inexistant");
 

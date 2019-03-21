@@ -22,8 +22,25 @@ let UtilisateurSchema = new Schema({
   password: {
     type: String,
     required: true,
-  }
+  },
+  token : String
 });
+
+UtilisateurSchema.methods.generateToken = function(){
+  return new Promise((resolve, reject) =>{
+      // ---- algo
+      this.token = Date.now();
+      this.save().then(()=>{
+          resolve({
+              role : this.role,
+              email : this.email,
+              token : this.token
+          })
+      },(err)=>{
+          reject(err)
+      })
+  })
+};
 
 let Utilisateur = mongoose.model('Utilisateur', UtilisateurSchema);
 module.exports = Utilisateur;

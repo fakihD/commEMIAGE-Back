@@ -94,7 +94,7 @@ function processRead (req) {
             if(evaluation){
                 console.log("Process : Evaluation - READ : " + evaluation);
 
-                reject(evaluation);
+                resolve(evaluation);
             }else{
                 console.log("Process : Evaluation - READ : Inexistant");
 
