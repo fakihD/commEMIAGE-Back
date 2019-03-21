@@ -94,7 +94,7 @@ function processRead (req) {
             if(administrateur){
                 console.log("Process : Administrateur - READ : " + administrateur);
 
-                reject(administrateur);
+                resolve(administrateur);
             }else{
                 console.log("Process : Administrateur - READ : Inexistant");
 

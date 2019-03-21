@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 // -- Load model needed for the project
 const process = require('./Process_Utilisateur');
 
@@ -23,7 +25,6 @@ function actionCreate (req) {
             }
             console.log("Utilisateur - CREATE - hash : " + hash);
             password = hash;
-            next();
         })
 
         resolve(process.processCreate(req, password));
@@ -72,10 +73,30 @@ function actionRead (req) {
     });
 };
 
+// -- LOGIN
+function actionLogin (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Action : Utilisateur - LOGIN");
+
+        password = req.body.password;
+        bcrypt.hash(password, 10, function (err, hash){
+            if (err) {
+                console.log("Utilisateur - LOGIN - hashError : " + err);
+                return next(err);
+            }
+            console.log("Utilisateur - LOGIN - hash : " + hash);
+            password = hash;
+        })
+
+        resolve(process.processLogin(req, password));
+    });
+};
+
 exports.actionFindAll = actionFindAll;
 exports.actionCreate = actionCreate;
 exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
+exports.actionLogin = actionLogin;
 

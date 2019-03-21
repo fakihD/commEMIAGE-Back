@@ -14,6 +14,7 @@ const action = require('./Action_Utilisateur');
 const lienError = '/error';
 const lienAll = '/';
 const lienAdd = '/add';
+const lienLogin = '/login';
 const lienUpdateAll = '/update';
 const lienUpdate = '/update/:id';
 const lienDelete = '/delete/:id';
@@ -81,6 +82,16 @@ app.get(lienGet, function (req, res) {
     console.log("Route : Utilisateur - READ id : " + new ObjectId(req.params.id));
 
     action.actionRead(req).then((callback) => {
+        res.send(callback);
+    });
+});
+
+// -- LOGIN
+app.post(lienLogin,(req,res)=>{
+    console.log("Route : Utilisateur - LOGIN");
+    console.log("Route : Utilisateur - LOGIN email : " + req.body.email);
+
+    action.actionLogin(req).then((callback) => {
         res.send(callback);
     });
 });

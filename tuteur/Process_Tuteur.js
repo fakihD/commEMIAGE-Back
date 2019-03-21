@@ -94,7 +94,7 @@ function processRead (req) {
             if(tuteur){
                 console.log("Process : Tuteur - READ : " + tuteur);
 
-                reject(tuteur);
+                resolve(tuteur);
             }else{
                 console.log("Process : Tuteur - READ : Inexistant");
 

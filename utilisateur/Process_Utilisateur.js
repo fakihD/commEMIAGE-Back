@@ -94,7 +94,7 @@ function processRead (req) {
             if(utilisateur){
                 console.log("Process : Utilisateur - READ : " + utilisateur);
 
-                reject(utilisateur);
+                resolve(utilisateur);
             }else{
                 console.log("Process : Utilisateur - READ : Inexistant");
 
@@ -108,8 +108,40 @@ function processRead (req) {
     });
 };
 
+// -- LOGIN
+function processLogin (req, password) {
+    return new Promise(function(resolve, reject) {
+        console.log("Process : Utilisateur - LOGIN");
+        console.log("Process : Utilisateur - LOGIN email : " + req.body.email);
+
+        mongoose.model('Utilisateur').findOne({email : req.body.email, password : password}).then(utilisateur => {
+            if(utilisateur){
+                // --- Generate token
+                utilisateur.generateToken().then((utilisateurWebFormat)=>{
+                    console.log("Process : Utilisateur - LOGIN : " + utilisateurWebFormat);
+    
+                    resolve(utilisateurWebFormat);
+                },(err)=>{
+                    console.log("Process : Utilisateur TOKEN - LOGIN : Error");
+        
+                    reject("Erreur");
+                })
+            }else{
+                console.log("Process : Utilisateur - LOGIN : Inexistant");
+
+                reject("Inexistant");
+            }
+        },(err)=>{
+            console.log("Process : Utilisateur - LOGIN : Error");
+
+            reject("Erreur");
+        })
+    });
+};
+
 exports.processFindAll = processFindAll;
 exports.processCreate = processCreate;
 exports.processUpdate = processUpdate;
 exports.processDelete = processDelete;
 exports.processRead = processRead;
+exports.processLogin = processLogin;

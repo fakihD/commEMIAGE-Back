@@ -94,7 +94,7 @@ function processRead (req) {
             if(semestre){
                 console.log("Process : Semestre - READ : " + semestre);
 
-                reject(semestre);
+                resolve(semestre);
             }else{
                 console.log("Process : Semestre - READ : Inexistant");
 
