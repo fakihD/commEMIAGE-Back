@@ -18,6 +18,7 @@ const lienUpdateAll = '/update';
 const lienUpdate = '/update/:id';
 const lienDelete = '/delete/:id';
 const lienGet = '/get/:id';
+const lienGetEmail = '/getEmail/:email';
 
 const pageError ='';
 
@@ -75,12 +76,22 @@ app.delete(lienDelete, function (req, res) {
     });
 });
 
-// -- READ
+// -- READ ID
 app.get(lienGet, function (req, res) {
-    console.log("Route : Tuteur - READ");
+    console.log("Route : Tuteur - READ ID");
     console.log("Route : Tuteur - READ id : " + new ObjectId(req.params.id));
 
     action.actionRead(req).then((callback) => {
+        res.send(callback);
+    });
+});
+
+// -- READ EMAIL
+app.get(lienGetEmail, function (req, res) {
+    console.log("Route : Tuteur - READ EMAIL");
+    console.log("Route : Tuteur - READ EMAIL : " + req.params.email);
+
+    action.actionReadEmail(req).then((callback) => {
         res.send(callback);
     });
 });

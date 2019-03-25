@@ -14,7 +14,7 @@ const action = require('./Action_Utilisateur');
 const lienError = '/error';
 const lienAll = '/';
 const lienAdd = '/add';
-const lienLogin = '/login';
+const lienLogin = '/login/:email/:password';
 const lienUpdateAll = '/update';
 const lienUpdate = '/update/:id';
 const lienDelete = '/delete/:id';
@@ -87,11 +87,11 @@ app.get(lienGet, function (req, res) {
 });
 
 // -- LOGIN
-app.post(lienLogin,(req,res)=>{
+app.get(lienLogin,(req,res)=>{
     console.log("Route : Utilisateur - LOGIN");
-    console.log("Route : Utilisateur - LOGIN email : " + req.body.email);
+    console.log("Route : Utilisateur - LOGIN email : " + req.params.email);
 
-    action.actionLogin(req).then((callback) => {
+    action.actionLogin(req.params.email, req.params.password).then((callback) => {
         res.send(callback);
     });
 });

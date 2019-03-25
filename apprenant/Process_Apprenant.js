@@ -57,7 +57,7 @@ function processUpdate (id, body) {
 
                 reject("Erreur");
         }else{
-                console.log("Process : Apprenant - UPDATE : " + updatedApprenant);
+                console.log("Process : Apprenant - UPDATE : " + JSON.stringify(updatedApprenant));
 
                 resolve("Done");
         }
@@ -84,7 +84,7 @@ function processDelete (req) {
     });
 };
 
-// -- READ
+// -- READ ID
 function processRead (req) {
     return new Promise(function(resolve, reject) {
         console.log("Process : Apprenant - READ");
@@ -108,8 +108,33 @@ function processRead (req) {
     });
 };
 
+// -- READ EMAIL
+function processReadEmail (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Process : Apprenant - READ EMAIL");
+        console.log("Process : Apprenant - READ EMAIL : " + req.params.email);
+
+        mongoose.model('Apprenant').findOne({email : req.params.email}).then((apprenant)=>{
+            if(apprenant){
+                console.log("Process : Apprenant - READ EMAIL : " + apprenant);
+
+                resolve(apprenant);
+            }else{
+                console.log("Process : Apprenant - READ EMAIL : Inexistant");
+
+                reject("Inexistant");
+            }
+        },(err)=>{
+            console.log("Process : Apprenant - READ EMAIL : Error");
+
+            reject("Erreur");
+        });
+    });
+};
+
 exports.processFindAll = processFindAll;
 exports.processCreate = processCreate;
 exports.processUpdate = processUpdate;
 exports.processDelete = processDelete;
 exports.processRead = processRead;
+exports.processReadEmail = processReadEmail;

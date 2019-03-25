@@ -109,12 +109,12 @@ function processRead (req) {
 };
 
 // -- LOGIN
-function processLogin (req, password) {
+function processLogin (email, password) {
     return new Promise(function(resolve, reject) {
         console.log("Process : Utilisateur - LOGIN");
-        console.log("Process : Utilisateur - LOGIN email : " + req.body.email);
+        console.log("Process : Utilisateur - LOGIN email : " + email);
 
-        mongoose.model('Utilisateur').findOne({email : req.body.email, password : password}).then(utilisateur => {
+        mongoose.model('Utilisateur').findOne({email : email, password : password}).then(utilisateur => {
             if(utilisateur){
                 // --- Generate token
                 utilisateur.generateToken().then((utilisateurWebFormat)=>{
