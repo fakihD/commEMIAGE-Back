@@ -84,24 +84,48 @@ function processDelete (req) {
     });
 };
 
-// -- READ
+// -- READ ID
 function processRead (req) {
     return new Promise(function(resolve, reject) {
-        console.log("Process : Administrateur - READ");
-        console.log("Process : Administrateur - READ id : " + new ObjectId(req.params.id));
+        console.log("Process : Adminstrateur - READ");
+        console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Administrateur').findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
+        mongoose.model('Adminstrateur').findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
             if(administrateur){
-                console.log("Process : Administrateur - READ : " + administrateur);
+                console.log("Process : Adminstrateur - READ : " + administrateur);
 
                 resolve(administrateur);
             }else{
-                console.log("Process : Administrateur - READ : Inexistant");
+                console.log("Process : Adminstrateur - READ : Inexistant");
 
                 reject("Inexistant");
             }
         },(err)=>{
-            console.log("Process : Administrateur - READ : Error");
+            console.log("Process : Adminstrateur - READ : Error");
+
+            reject("Erreur");
+        });
+    });
+};
+
+// -- READ EMAIL
+function processReadEmail (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Process : Adminstrateur - READ EMAIL");
+        console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
+
+        mongoose.model('Adminstrateur').findOne({email : req.params.email}).then((administrateur)=>{
+            if(administrateur){
+                console.log("Process : Adminstrateur - READ EMAIL : " + administrateur);
+
+                resolve(administrateur);
+            }else{
+                console.log("Process : Adminstrateur - READ EMAIL : Inexistant");
+
+                reject("Inexistant");
+            }
+        },(err)=>{
+            console.log("Process : Adminstrateur - READ EMAIL : Error");
 
             reject("Erreur");
         });
@@ -113,3 +137,4 @@ exports.processCreate = processCreate;
 exports.processUpdate = processUpdate;
 exports.processDelete = processDelete;
 exports.processRead = processRead;
+exports.processReadEmail = processReadEmail;

@@ -52,12 +52,21 @@ function actionDelete (req) {
     });
 };
 
-// -- READ
+// -- READ ID
 function actionRead (req) {
     return new Promise(function(resolve, reject) {
-        console.log("Action : Tuteur - READ");
+        console.log("Action : Tuteur - READ ID");
 
         resolve(process.processRead(req));
+    });
+};
+
+// -- READ EMAIL
+function actionReadEmail (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Action : Tuteur - READ EMAIL");
+
+        resolve(process.processReadEmail(req));
     });
 };
 
@@ -67,4 +76,5 @@ exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
+exports.actionReadEmail = actionReadEmail;
 

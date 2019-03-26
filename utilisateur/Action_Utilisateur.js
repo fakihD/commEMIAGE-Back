@@ -74,11 +74,10 @@ function actionRead (req) {
 };
 
 // -- LOGIN
-function actionLogin (req) {
+function actionLogin (email, password) {
     return new Promise(function(resolve, reject) {
         console.log("Action : Utilisateur - LOGIN");
 
-        password = req.body.password;
         bcrypt.hash(password, 10, function (err, hash){
             if (err) {
                 console.log("Utilisateur - LOGIN - hashError : " + err);
@@ -88,7 +87,7 @@ function actionLogin (req) {
             password = hash;
         })
 
-        resolve(process.processLogin(req, password));
+        resolve(process.processLogin(email, password));
     });
 };
 

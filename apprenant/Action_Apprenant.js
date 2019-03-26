@@ -24,7 +24,7 @@ function actionUpdate (req) {
     return new Promise(function(resolve, reject) {
         console.log("Action : Apprenant - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
+        resolve(process.processUpdate(req.params.id, req.body.apprenant));
     });
 };
 
@@ -52,12 +52,21 @@ function actionDelete (req) {
     });
 };
 
-// -- READ
+// -- READ ID
 function actionRead (req) {
     return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - READ");
+        console.log("Action : Apprenant - READ ID");
 
         resolve(process.processRead(req));
+    });
+};
+
+// -- READ EMAIL
+function actionReadEmail (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Action : Apprenant - READ EMAIL");
+
+        resolve(process.processReadEmail(req));
     });
 };
 
@@ -67,4 +76,5 @@ exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
+exports.actionReadEmail = actionReadEmail;
 

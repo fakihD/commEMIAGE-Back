@@ -84,7 +84,7 @@ function processDelete (req) {
     });
 };
 
-// -- READ
+// -- READ ID
 function processRead (req) {
     return new Promise(function(resolve, reject) {
         console.log("Process : Tuteur - READ");
@@ -108,8 +108,33 @@ function processRead (req) {
     });
 };
 
+// -- READ EMAIL
+function processReadEmail (req) {
+    return new Promise(function(resolve, reject) {
+        console.log("Process : Tuteur - READ EMAIL");
+        console.log("Process : Tuteur - READ EMAIL : " + req.params.email);
+
+        mongoose.model('Tuteur').findOne({email : req.params.email}).then((tuteur)=>{
+            if(tuteur){
+                console.log("Process : Tuteur - READ EMAIL : " + tuteur);
+
+                resolve(tuteur);
+            }else{
+                console.log("Process : Tuteur - READ EMAIL : Inexistant");
+
+                reject("Inexistant");
+            }
+        },(err)=>{
+            console.log("Process : Tuteur - READ EMAIL : Error");
+
+            reject("Erreur");
+        });
+    });
+};
+
 exports.processFindAll = processFindAll;
 exports.processCreate = processCreate;
 exports.processUpdate = processUpdate;
 exports.processDelete = processDelete;
 exports.processRead = processRead;
+exports.processReadEmail = processReadEmail;
