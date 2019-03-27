@@ -34,7 +34,7 @@ function actionUpdateAll (req) {
         console.log("Action : Filiere - UPDATE ALL");
         let res = "";
         req.body.filiere.forEach(function(filiere){
-            res  = processUpdate(filiere._id, filiere);
+            res  = process.processUpdate(filiere._id, filiere);
             if( res == "Erreur"){
                 reject(res);
             }

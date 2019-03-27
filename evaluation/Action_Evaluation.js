@@ -34,7 +34,7 @@ function actionUpdateAll (req) {
         console.log("Action : Evaluation - UPDATE ALL");
         let res = "";
         req.body.evaluation.forEach(function(evaluation){
-            res  = processUpdate(evaluation._id, evaluation);
+            res  = process.processUpdate(evaluation._id, evaluation);
             if( res == "Erreur"){
                 reject(res);
             }

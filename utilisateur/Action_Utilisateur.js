@@ -46,7 +46,7 @@ function actionUpdateAll (req) {
         console.log("Action : Utilisateur - UPDATE ALL");
         let res = "";
         req.body.utilisateur.forEach(function(utilisateur){
-            res  = processUpdate(utilisateur._id, utilisateur);
+            res  = process.processUpdate(utilisateur._id, utilisateur);
             if( res == "Erreur"){
                 reject(res);
             }

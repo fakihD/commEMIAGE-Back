@@ -27,6 +27,6 @@ let AdministrateurSchema = new Schema({
   }
 });
 
-let Administrateur = mongoose.model('administrateur',AdministrateurSchema);
+let Administrateur = mongoose.model('Administrateur',AdministrateurSchema);
 
 module.exports = Administrateur;

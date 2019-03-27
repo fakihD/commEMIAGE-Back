@@ -31,7 +31,7 @@ function processCreate (req) {
         console.log("Process : Module - CREATE :" + req.body.nom);
 
         Module = mongoose.model('Module');
-        newModule = new Module({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil});
+        newModule = new Module({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil, semestre:req.body.semestre});
         newModule.id = newModule._id;
 
         newModule.save().then(()=>{
@@ -57,7 +57,7 @@ function processUpdate (id, body) {
 
                 reject("Erreur");
         }else{
-                console.log("Process : Module - UPDATE : " + updatedModule);
+                console.log("Process : Module - UPDATE : " + JSON.stringify(updatedModule));
 
                 resolve("Done");
         }

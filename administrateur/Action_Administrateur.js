@@ -34,7 +34,7 @@ function actionUpdateAll (req) {
         console.log("Action : Administrateur - UPDATE ALL");
         let res = "";
         req.body.administrateur.forEach(function(administrateur){
-            res  = processUpdate(administrateur._id, administrateur);
+            res  = process.processUpdate(administrateur._id, administrateur);
             if( res == "Erreur"){
                 reject(res);
             }

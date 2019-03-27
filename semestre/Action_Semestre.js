@@ -34,7 +34,7 @@ function actionUpdateAll (req) {
         console.log("Action : Semestre - UPDATE ALL");
         let res = "";
         req.body.semestre.forEach(function(semestre){
-            res  = processUpdate(semestre._id, semestre);
+            res  = process.processUpdate(semestre._id, semestre);
             if( res == "Erreur"){
                 reject(res);
             }
