@@ -31,7 +31,7 @@ function processCreate (req) {
         console.log("Process : Suivi - CREATE :" + req.body.nom);
 
         Suivi = mongoose.model('Suivi');
-        newSuivi = new Suivi({alias:req.body.alias});
+        newSuivi = new Suivi({alias:req.body.alias, questions:req.body.questions, remarques:req.body.remarques, tuteur:req.body.tuteur, apprenant:req.body.apprenant, module:req.body.module});
         newSuivi.id = newSuivi._id;
 
         newSuivi.save().then(()=>{
