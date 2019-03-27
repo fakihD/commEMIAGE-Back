@@ -34,7 +34,7 @@ function actionUpdateAll (req) {
         console.log("Action : Suivi - UPDATE ALL");
         let res = "";
         req.body.suivi.forEach(function(suivi){
-            res  = processUpdate(suivi._id, suivi);
+            res  = process.processUpdate(suivi._id, suivi);
             if( res == "Erreur"){
                 reject(res);
             }

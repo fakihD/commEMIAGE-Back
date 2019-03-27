@@ -32,18 +32,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-/*app.use('/administrateurs',require('./administrateur/AdministrateurRoute'));
-app.use('/apprenants',require('./routes/ApprenantRoute'));
-app.use('/evaluations',require('./routes/EvaluationRoute'));
-app.use('/filieres',require('./routes/FiliereRoute'));
-app.use('/modules',require('./routes/ModuleRoute'));
-app.use('/semestres',require('./routes/SemestreRoute'));
-app.use('/suivis',require('./routes/SuiviRoute'));
-app.use('/tuteurs',require('./routes/TuteurRoute'));
-app.use('/utilisateurs',require('./routes/UtilisateurRoute'));*/
-
-
-
 app.use('/administrateurs',require('./administrateur/Route_Administrateur'));
 app.use('/apprenants',require('./apprenant/Route_Apprenant'));
 app.use('/evaluations',require('./evaluation/Route_Evaluation'));

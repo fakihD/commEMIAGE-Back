@@ -20,23 +20,19 @@ ModuleSchema = new Schema({
         default: 10,
         required: true
     },
-    filiere : {
-        nom : String
-    },
-    tuteur : {
-        tuteurId : String,
-        nom : String,
-        prenom : String
-    },
-    semestre : {
+    semestre : [{
         nom : String,
         dateDebut : {
             type: Date,
         },
         dateFin : {
             type: Date,
+        },
+        tuteur : {
+            nom : String,
+            prenom : String
         }
-    }
+    }]
 });
 
 let Module = mongoose.model('Module', ModuleSchema);
