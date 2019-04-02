@@ -2,72 +2,62 @@
 const process = require('./Process_Apprenant');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Apprenant - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Apprenant - CREATE");
 
-        resolve(process.processCreate(req));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Apprenant - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body.apprenant));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - UPDATE ALL");
-        let res = "";
-        req.body.apprenant.forEach(function(apprenant){
-            res  = process.processUpdate(apprenant._id, apprenant);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Apprenant - UPDATE ALL");
+
+    let res = "";
+    req.body.apprenant.forEach(async function(apprenant){
+        res  = await process.processUpdate(apprenant._id, apprenant);
+        console.log("Action : Apprenant - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Apprenant - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Apprenant - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Apprenant - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ ID
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - READ ID");
+async function actionRead (req) {
+    console.log("Action : Apprenant - READ ID");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 // -- READ EMAIL
-function actionReadEmail (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Apprenant - READ EMAIL");
+async function actionReadEmail (req) {
+    console.log("Action : Apprenant - READ EMAIL");
 
-        resolve(process.processReadEmail(req));
-    });
+    return await process.processReadEmail(req);
 };
 
 exports.actionFindAll = actionFindAll;
@@ -77,4 +67,3 @@ exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
 exports.actionReadEmail = actionReadEmail;
-

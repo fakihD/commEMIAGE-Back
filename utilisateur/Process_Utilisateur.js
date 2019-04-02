@@ -4,139 +4,125 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Utilisateur');
+Utilisateur = mongoose.model('Utilisateur');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Utilisateur - FIND ALL");
 
-        Utilisateur = mongoose.model('Utilisateur');
-        Utilisateur.find().then((utilisateurs)=>{
-        // console.log("Process : Utilisateur - FIND ALL : " + utilisateurs);
+    return await Utilisateur.find().then((utilisateurs)=>{
+        console.log("Process : Utilisateur - FIND ALL : " + utilisateurs);
 
-            resolve(utilisateurs);
-        },(err)=>{
-            console.log("Process : Utilisateur - FIND ALL : Error");
+        return utilisateurs;
+    },(err)=>{
+        console.log("Process : Utilisateur - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req, password) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - CREATE");
-        console.log("Process : Utilisateur - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Utilisateur - CREATE");
+    console.log("Process : Utilisateur - CREATE :" + req.body.nom);
 
-        Utilisateur = mongoose.model('Utilisateur');
-        newUtilisateur = new Utilisateur({role:req.body.role, email:req.body.email, password:password});
-        newUtilisateur.id = newUtilisateur._id;
+    newUtilisateur = new Utilisateur({role:req.body.role, email:req.body.email, password:password});
+    newUtilisateur.id = newUtilisateur._id;
 
-        newUtilisateur.save().then(()=>{
-            console.log("Process : Utilisateur - CREATE : Done");
+    return await newUtilisateur.save().then(()=>{
+        console.log("Process : Utilisateur - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Utilisateur - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Utilisateur - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - UPDATE");
-        
-        mongoose.model('Utilisateur').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedUtilisateur)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Utilisateur - UPDATE");
+    
+    return await Utilisateur.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedUtilisateur)=>{
         if(err){
                 console.log("Process : Utilisateur - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Utilisateur - UPDATE : " + updatedUtilisateur);
+                console.log("Process : Utilisateur - UPDATE : " + JSON.stringify(updatedUtilisateur));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - DELETE");
-        console.log("Process : Utilisateur - DELETE id : " + req.params.id);
-        
-        Utilisateur = mongoose.model('Utilisateur');
-        Utilisateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Utilisateur - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Utilisateur - DELETE");
+    console.log("Process : Utilisateur - DELETE id : " + req.params.id);
+    
+    return await Utilisateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Utilisateur - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Utilisateur - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Utilisateur - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - READ");
-        console.log("Process : Utilisateur - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Utilisateur - READ");
+    console.log("Process : Utilisateur - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Utilisateur').findOne({_id : new ObjectId(req.params.id)}).then((utilisateur)=>{
-            if(utilisateur){
-                console.log("Process : Utilisateur - READ : " + utilisateur);
+    return await Utilisateur.findOne({_id : new ObjectId(req.params.id)}).then((utilisateur)=>{
+        if(utilisateur){
+            console.log("Process : Utilisateur - READ : " + utilisateur);
 
-                resolve(utilisateur);
-            }else{
-                console.log("Process : Utilisateur - READ : Inexistant");
+            return utilisateur;
+        }else{
+            console.log("Process : Utilisateur - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Utilisateur - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Utilisateur - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- LOGIN
-function processLogin (email, password) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Utilisateur - LOGIN");
-        console.log("Process : Utilisateur - LOGIN email : " + email);
+async function processLogin (email, password) {
+    console.log("Process : Utilisateur - LOGIN");
+    console.log("Process : Utilisateur - LOGIN email : " + email);
 
-        mongoose.model('Utilisateur').findOne({email : email, password : password}).then(utilisateur => {
-            if(utilisateur){
-                // --- Generate token
-                utilisateur.generateToken().then((utilisateurWebFormat)=>{
-                    console.log("Process : Utilisateur - LOGIN : " + utilisateurWebFormat);
+    return await Utilisateur.findOne({email : email, password : password}).then(utilisateur => {
+        if(utilisateur){
+            // --- Generate token
+            utilisateur.generateToken().then((utilisateurWebFormat)=>{
+                console.log("Process : Utilisateur - LOGIN : " + utilisateurWebFormat);
+
+                return utilisateurWebFormat;
+            },(err)=>{
+                console.log("Process : Utilisateur TOKEN - LOGIN : Error");
     
-                    resolve(utilisateurWebFormat);
-                },(err)=>{
-                    console.log("Process : Utilisateur TOKEN - LOGIN : Error");
-        
-                    reject("Erreur");
-                })
-            }else{
-                console.log("Process : Utilisateur - LOGIN : Inexistant");
+                return "Erreur";
+            })
+        }else{
+            console.log("Process : Utilisateur - LOGIN : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Utilisateur - LOGIN : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Utilisateur - LOGIN : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 exports.processFindAll = processFindAll;

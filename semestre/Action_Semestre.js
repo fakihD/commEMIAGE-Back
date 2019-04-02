@@ -2,63 +2,55 @@
 const process = require('./Process_Semestre');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Semestre - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Semestre - CREATE");
 
-        resolve(process.processCreate(req));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Semestre - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - UPDATE ALL");
-        let res = "";
-        req.body.semestre.forEach(function(semestre){
-            res  = process.processUpdate(semestre._id, semestre);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Semestre - UPDATE ALL");
+
+    let res = "";
+    req.body.semestre.forEach(async function(semestre){
+        res  = await process.processUpdate(semestre._id, semestre);
+        console.log("Action : Semestre - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Semestre - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Semestre - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Semestre - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Semestre - READ");
+async function actionRead (req) {
+    console.log("Action : Semestre - READ");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 exports.actionFindAll = actionFindAll;
@@ -67,4 +59,3 @@ exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
-

@@ -2,72 +2,62 @@
 const process = require('./Process_Administrateur');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Administrateur - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Administrateur - CREATE");
 
-        resolve(process.processCreate(req));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Administrateur - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - UPDATE ALL");
-        let res = "";
-        req.body.administrateur.forEach(function(administrateur){
-            res  = process.processUpdate(administrateur._id, administrateur);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Administrateur - UPDATE ALL");
+
+    let res = "";
+    req.body.administrateur.forEach(async function(administrateur){
+        res  = await process.processUpdate(administrateur._id, administrateur);
+        console.log("Action : Administrateur - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Administrateur - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Administrateur - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Administrateur - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ ID
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - READ ID");
+async function actionRead (req) {
+    console.log("Action : Administrateur - READ ID");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 // -- READ EMAIL
-function actionReadEmail (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Administrateur - READ EMAIL");
+async function actionReadEmail (req) {
+    console.log("Action : Administrateur - READ EMAIL");
 
-        resolve(process.processReadEmail(req));
-    });
+    return await process.processReadEmail(req);
 };
 
 exports.actionFindAll = actionFindAll;
@@ -77,4 +67,3 @@ exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
 exports.actionReadEmail = actionReadEmail;
-

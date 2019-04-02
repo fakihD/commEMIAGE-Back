@@ -2,63 +2,55 @@
 const process = require('./Process_Suivi');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Suivi - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Suivi - CREATE");
 
-        resolve(process.processCreate(req));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Suivi - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - UPDATE ALL");
-        let res = "";
-        req.body.suivi.forEach(function(suivi){
-            res  = process.processUpdate(suivi._id, suivi);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Suivi - UPDATE ALL");
+
+    let res = "";
+    req.body.suivi.forEach(async function(suivi){
+        res  = await process.processUpdate(suivi._id, suivi);
+        console.log("Action : Suivi - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Suivi - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Suivi - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Suivi - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Suivi - READ");
+async function actionRead (req) {
+    console.log("Action : Suivi - READ");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 exports.actionFindAll = actionFindAll;
@@ -67,4 +59,3 @@ exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
-

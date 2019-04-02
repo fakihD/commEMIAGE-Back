@@ -33,8 +33,10 @@ app.get(lienAll, function (req, res) {
     console.log("Route : Module - FIND ALL");
 
     action.actionFindAll().then((callback) => {
+        console.log("Route : Module Resolve - FIND ALL :" + callback);
         res.send(callback);
     });
+    console.log("Route : Module End - FIND ALL");
 });
 
 // -- CREATE

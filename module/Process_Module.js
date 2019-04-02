@@ -4,107 +4,95 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Module');
+Module = mongoose.model('Module');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Module - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Module - FIND ALL");
 
-        Module = mongoose.model('Module');
-        Module.find().then((modules)=>{
-        // console.log("Process : Module - FIND ALL : " + modules);
+    return await Module.find().then((modules)=>{
+        console.log("Process : Module - FIND ALL : " + modules);
 
-            resolve(modules);
-        },(err)=>{
-            console.log("Process : Module - FIND ALL : Error");
+        return modules;
+    },(err)=>{
+        console.log("Process : Module - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Module - CREATE");
-        console.log("Process : Module - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Module - CREATE");
+    console.log("Process : Module - CREATE :" + req.body.nom);
 
-        Module = mongoose.model('Module');
-        newModule = new Module({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil, semestre:req.body.semestre});
-        newModule.id = newModule._id;
+    newModule = new Module({nom:req.body.nom, coefficient:req.body.coefficient, seuil:req.body.seuil, semestre:req.body.semestre});
+    newModule.id = newModule._id;
 
-        newModule.save().then(()=>{
-            console.log("Process : Module - CREATE : Done");
+    return await newModule.save().then(()=>{
+        console.log("Process : Module - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Module - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Module - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Module - UPDATE");
-        
-        mongoose.model('Module').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedModule)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Module - UPDATE");
+    
+    return await Module.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedModule)=>{
         if(err){
                 console.log("Process : Module - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
                 console.log("Process : Module - UPDATE : " + JSON.stringify(updatedModule));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Module - DELETE");
-        console.log("Process : Module - DELETE id : " + req.params.id);
-        
-        Module = mongoose.model('Module');
-        Module.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Module - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Module - DELETE");
+    console.log("Process : Module - DELETE id : " + req.params.id);
+    
+    return await Module.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Module - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Module - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Module - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Module - READ");
-        console.log("Process : Module - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Module - READ");
+    console.log("Process : Module - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Module').findOne({_id : new ObjectId(req.params.id)}).then((module)=>{
-            if(module){
-                console.log("Process : Module - READ : " + module);
+    return await Module.findOne({_id : new ObjectId(req.params.id)}).then((module)=>{
+        if(module){
+            console.log("Process : Module - READ : " + module);
 
-                resolve(module);
-            }else{
-                console.log("Process : Module - READ : Inexistant");
+            return module;
+        }else{
+            console.log("Process : Module - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Module - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Module - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 

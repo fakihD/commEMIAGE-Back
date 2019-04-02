@@ -4,107 +4,95 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Evaluation');
+Evaluation = mongoose.model('Evaluation');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Evaluation - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Evaluation - FIND ALL");
 
-        Evaluation = mongoose.model('Evaluation');
-        Evaluation.find().then((evaluations)=>{
-        // console.log("Process : Evaluation - FIND ALL : " + evaluations);
+    return await Evaluation.find().then((evaluations)=>{
+        console.log("Process : Evaluation - FIND ALL : " + evaluations);
 
-            resolve(evaluations);
-        },(err)=>{
-            console.log("Process : Evaluation - FIND ALL : Error");
+        return evaluations;
+    },(err)=>{
+        console.log("Process : Evaluation - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Evaluation - CREATE");
-        console.log("Process : Evaluation - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Evaluation - CREATE");
+    console.log("Process : Evaluation - CREATE :" + req.body.nom);
 
-        Evaluation = mongoose.model('Evaluation');
-        newEvaluation = new Evaluation({alias:req.body.alias});
-        newEvaluation.id = newEvaluation._id;
+    newEvaluation = new Evaluation({alias:req.body.alias});
+    newEvaluation.id = newEvaluation._id;
 
-        newEvaluation.save().then(()=>{
-            console.log("Process : Evaluation - CREATE : Done");
+    return await newEvaluation.save().then(()=>{
+        console.log("Process : Evaluation - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Evaluation - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Evaluation - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Evaluation - UPDATE");
-        
-        mongoose.model('Evaluation').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedEvaluation)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Evaluation - UPDATE");
+    
+    return await Evaluation.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedEvaluation)=>{
         if(err){
                 console.log("Process : Evaluation - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Evaluation - UPDATE : " + updatedEvaluation);
+                console.log("Process : Evaluation - UPDATE : " + JSON.stringify(updatedEvaluation));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Evaluation - DELETE");
-        console.log("Process : Evaluation - DELETE id : " + req.params.id);
-        
-        Evaluation = mongoose.model('Evaluation');
-        Evaluation.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Evaluation - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Evaluation - DELETE");
+    console.log("Process : Evaluation - DELETE id : " + req.params.id);
+    
+    return await Evaluation.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Evaluation - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Evaluation - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Evaluation - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Evaluation - READ");
-        console.log("Process : Evaluation - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Evaluation - READ");
+    console.log("Process : Evaluation - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Evaluation').findOne({_id : new ObjectId(req.params.id)}).then((evaluation)=>{
-            if(evaluation){
-                console.log("Process : Evaluation - READ : " + evaluation);
+    return await Evaluation.findOne({_id : new ObjectId(req.params.id)}).then((evaluation)=>{
+        if(evaluation){
+            console.log("Process : Evaluation - READ : " + evaluation);
 
-                resolve(evaluation);
-            }else{
-                console.log("Process : Evaluation - READ : Inexistant");
+            return evaluation;
+        }else{
+            console.log("Process : Evaluation - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Evaluation - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Evaluation - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 

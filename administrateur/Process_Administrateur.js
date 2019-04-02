@@ -4,131 +4,117 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Administrateur');
+Administrateur = mongoose.model('Administrateur');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Administrateur - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Administrateur - FIND ALL");
 
-        Administrateur = mongoose.model('Administrateur');
-        Administrateur.find().then((administrateurs)=>{
-        // console.log("Process : Administrateur - FIND ALL : " + administrateurs);
+    return await Administrateur.find().then((administrateurs)=>{
+        console.log("Process : Administrateur - FIND ALL : " + administrateurs);
 
-            resolve(administrateurs);
-        },(err)=>{
-            console.log("Process : Administrateur - FIND ALL : Error");
+        return administrateurs;
+    },(err)=>{
+        console.log("Process : Administrateur - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Administrateur - CREATE");
-        console.log("Process : Administrateur - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Administrateur - CREATE");
+    console.log("Process : Administrateur - CREATE :" + req.body.nom);
 
-        Administrateur = mongoose.model('Administrateur');
-        newAdministrateur = new Administrateur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
-        newAdministrateur.id = newAdministrateur._id;
+    newAdministrateur = new Administrateur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email});
+    newAdministrateur.id = newAdministrateur._id;
 
-        newAdministrateur.save().then(()=>{
-            console.log("Process : Administrateur - CREATE : Done");
+    return await newAdministrateur.save().then(()=>{
+        console.log("Process : Administrateur - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Administrateur - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Administrateur - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Administrateur - UPDATE");
-        
-        mongoose.model('Administrateur').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedAdministrateur)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Administrateur - UPDATE");
+    
+    return await Administrateur.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedAdministrateur)=>{
         if(err){
                 console.log("Process : Administrateur - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Administrateur - UPDATE : " + updatedAdministrateur);
+                console.log("Process : Administrateur - UPDATE : " + JSON.stringify(updatedAdministrateur));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Administrateur - DELETE");
-        console.log("Process : Administrateur - DELETE id : " + req.params.id);
-        
-        Administrateur = mongoose.model('Administrateur');
-        Administrateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Administrateur - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Administrateur - DELETE");
+    console.log("Process : Administrateur - DELETE id : " + req.params.id);
+    
+    return await Administrateur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Administrateur - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Administrateur - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Administrateur - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ ID
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Adminstrateur - READ");
-        console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Adminstrateur - READ");
+    console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Adminstrateur').findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
-            if(administrateur){
-                console.log("Process : Adminstrateur - READ : " + administrateur);
+    Administrateur.findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
+        if(administrateur){
+            console.log("Process : Administrateur - READ : " + administrateur);
 
-                resolve(administrateur);
-            }else{
-                console.log("Process : Adminstrateur - READ : Inexistant");
+            return administrateur;
+        }else{
+            console.log("Process : Administrateur - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Adminstrateur - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Administrateur - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ EMAIL
-function processReadEmail (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Adminstrateur - READ EMAIL");
-        console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
+async function processReadEmail (req) {
+    console.log("Process : Adminstrateur - READ EMAIL");
+    console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
 
-        mongoose.model('Adminstrateur').findOne({email : req.params.email}).then((administrateur)=>{
-            if(administrateur){
-                console.log("Process : Adminstrateur - READ EMAIL : " + administrateur);
+    Administrateur.findOne({email : req.params.email}).then((administrateur)=>{
+        if(administrateur){
+            console.log("Process : Administrateur - READ : " + administrateur);
 
-                resolve(administrateur);
-            }else{
-                console.log("Process : Adminstrateur - READ EMAIL : Inexistant");
+            return administrateur;
+        }else{
+            console.log("Process : Administrateur - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Adminstrateur - READ EMAIL : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Administrateur - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
