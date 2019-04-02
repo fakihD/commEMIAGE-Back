@@ -4,107 +4,95 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Semestre');
+Semestre = mongoose.model('Semestre');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Semestre - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Semestre - FIND ALL");
 
-        Semestre = mongoose.model('Semestre');
-        Semestre.find().then((semestres)=>{
-        // console.log("Process : Semestre - FIND ALL : " + semestres);
+    return await Semestre.find().then((semestres)=>{
+        console.log("Process : Semestre - FIND ALL : " + semestres);
 
-            resolve(semestres);
-        },(err)=>{
-            console.log("Process : Semestre - FIND ALL : Error");
+        return semestres;
+    },(err)=>{
+        console.log("Process : Semestre - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Semestre - CREATE");
-        console.log("Process : Semestre - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Semestre - CREATE");
+    console.log("Process : Semestre - CREATE :" + req.body.nom);
 
-        Semestre = mongoose.model('Semestre');
-        newSemestre = new Semestre({nom:req.body.nom, dateDebut:req.body.dateDebut, dateFin:req.body.dateFin});
-        newSemestre.id = newSemestre._id;
+    newSemestre = new Semestre({nom:req.body.nom, dateDebut:req.body.dateDebut, dateFin:req.body.dateFin});
+    newSemestre.id = newSemestre._id;
 
-        newSemestre.save().then(()=>{
-            console.log("Process : Semestre - CREATE : Done");
+    return await newSemestre.save().then(()=>{
+        console.log("Process : Semestre - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Semestre - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Semestre - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Semestre - UPDATE");
-        
-        mongoose.model('Semestre').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedSemestre)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Semestre - UPDATE");
+    
+    return await Semestre.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedSemestre)=>{
         if(err){
                 console.log("Process : Semestre - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Semestre - UPDATE : " + updatedSemestre);
+                console.log("Process : Semestre - UPDATE : " + JSON.stringify(updatedSemestre));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Semestre - DELETE");
-        console.log("Process : Semestre - DELETE id : " + req.params.id);
-        
-        Semestre = mongoose.model('Semestre');
-        Semestre.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Semestre - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Semestre - DELETE");
+    console.log("Process : Semestre - DELETE id : " + req.params.id);
+    
+    return await Semestre.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Semestre - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Semestre - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Semestre - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Semestre - READ");
-        console.log("Process : Semestre - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Semestre - READ");
+    console.log("Process : Semestre - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Semestre').findOne({_id : new ObjectId(req.params.id)}).then((semestre)=>{
-            if(semestre){
-                console.log("Process : Semestre - READ : " + semestre);
+    return await Semestre.findOne({_id : new ObjectId(req.params.id)}).then((semestre)=>{
+        if(semestre){
+            console.log("Process : Semestre - READ : " + semestre);
 
-                resolve(semestre);
-            }else{
-                console.log("Process : Semestre - READ : Inexistant");
+            return semestre;
+        }else{
+            console.log("Process : Semestre - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Semestre - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Semestre - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 

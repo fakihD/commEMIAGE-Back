@@ -2,63 +2,55 @@
 const process = require('./Process_Module');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Module - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Module - CREATE");
 
-        resolve(process.processCreate(req));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Module - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - UPDATE ALL");
-        let res = "";
-        req.body.module.forEach(function(module){
-            res  = process.processUpdate(module._id, module);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Module - UPDATE ALL");
+
+    let res = "";
+    req.body.module.forEach(async function(module){
+        res  = await process.processUpdate(module._id, module);
+        console.log("Action : Module - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Module - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Module - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Module - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Module - READ");
+async function actionRead (req) {
+    console.log("Action : Module - READ");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 exports.actionFindAll = actionFindAll;
@@ -67,4 +59,3 @@ exports.actionUpdate = actionUpdate;
 exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
-

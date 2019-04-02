@@ -4,107 +4,95 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Filiere');
+Filiere = mongoose.model('Filiere');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Filiere - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Filiere - FIND ALL");
 
-        Filiere = mongoose.model('Filiere');
-        Filiere.find().then((filieres)=>{
-        // console.log("Process : Filiere - FIND ALL : " + filieres);
+    return await Filiere.find().then((filieres)=>{
+        console.log("Process : Filiere - FIND ALL : " + filieres);
 
-            resolve(filieres);
-        },(err)=>{
-            console.log("Process : Filiere - FIND ALL : Error");
+        return filieres;
+    },(err)=>{
+        console.log("Process : Filiere - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Filiere - CREATE");
-        console.log("Process : Filiere - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Filiere - CREATE");
+    console.log("Process : Filiere - CREATE :" + req.body.nom);
 
-        Filiere = mongoose.model('Filiere');
-        newFiliere = new Filiere({nom:req.body.nom, description:req.body.description, module:req.body.module});
-        newFiliere.id = newFiliere._id;
+    newFiliere = new Filiere({nom:req.body.nom, description:req.body.description, filiere:req.body.filiere});
+    newFiliere.id = newFiliere._id;
 
-        newFiliere.save().then(()=>{
-            console.log("Process : Filiere - CREATE : Done");
+    return await newFiliere.save().then(()=>{
+        console.log("Process : Filiere - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Filiere - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Filiere - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Filiere - UPDATE");
-        
-        mongoose.model('Filiere').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedFiliere)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Filiere - UPDATE");
+    
+    return await Filiere.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedFiliere)=>{
         if(err){
                 console.log("Process : Filiere - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Filiere - UPDATE : " + updatedFiliere);
+                console.log("Process : Filiere - UPDATE : " + JSON.stringify(updatedFiliere));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Filiere - DELETE");
-        console.log("Process : Filiere - DELETE id : " + req.params.id);
-        
-        Filiere = mongoose.model('Filiere');
-        Filiere.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Filiere - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Filiere - DELETE");
+    console.log("Process : Filiere - DELETE id : " + req.params.id);
+    
+    return await Filiere.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Filiere - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Filiere - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Filiere - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Filiere - READ");
-        console.log("Process : Filiere - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Filiere - READ");
+    console.log("Process : Filiere - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Filiere').findOne({_id : new ObjectId(req.params.id)}).then((filiere)=>{
-            if(filiere){
-                console.log("Process : Filiere - READ : " + filiere);
+    return await Filiere.findOne({_id : new ObjectId(req.params.id)}).then((filiere)=>{
+        if(filiere){
+            console.log("Process : Filiere - READ : " + filiere);
 
-                resolve(filiere);
-            }else{
-                console.log("Process : Filiere - READ : Inexistant");
+            return filiere;
+        }else{
+            console.log("Process : Filiere - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Filiere - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Filiere - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 

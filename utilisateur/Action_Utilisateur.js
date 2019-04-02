@@ -4,73 +4,55 @@ const bcrypt = require('bcrypt');
 const process = require('./Process_Utilisateur');
 
 // -- FIND ALL
-function actionFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - FIND ALL"); 
-            
-        resolve(process.processFindAll());
-    });
+async function actionFindAll () {
+    console.log("Action : Utilisateur - FIND ALL");
+
+    return await process.processFindAll();
 };
 
 // -- CREATE
-function actionCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - CREATE");
+async function actionCreate (req) {
+    console.log("Action : Utilisateur - CREATE");
 
-        password = req.body.password;
-        bcrypt.hash(password, 10, function (err, hash){
-            if (err) {
-                console.log("Utilisateur - CREATE - hashError : " + err);
-                return next(err);
-            }
-            console.log("Utilisateur - CREATE - hash : " + hash);
-            password = hash;
-        })
-
-        resolve(process.processCreate(req, password));
-    });
+    return await process.processCreate(req);
 };
 
 // -- UPDATE
-function actionUpdate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - UPDATE");
+async function actionUpdate (req) {
+    console.log("Action : Utilisateur - UPDATE");
 
-        resolve(process.processUpdate(req.params.id, req.body));
-    });
+    return await process.processUpdate(req.params.id, req.body);
 };
 
 // -- UPDATE ALL
-function actionUpdateAll (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - UPDATE ALL");
-        let res = "";
-        req.body.utilisateur.forEach(function(utilisateur){
-            res  = process.processUpdate(utilisateur._id, utilisateur);
-            if( res == "Erreur"){
-                reject(res);
-            }
-        });
-        resolve("Done");
+async function actionUpdateAll (req) {
+    console.log("Action : Utilisateur - UPDATE ALL");
+
+    let res = "";
+    req.body.utilisateur.forEach(async function(utilisateur){
+        res  = await process.processUpdate(utilisateur._id, utilisateur);
+        console.log("Action : Utilisateur - UPDATE ALL IN");
+        if( res == "Erreur"){
+            console.log("Action : Utilisateur - UPDATE ALL ERR");
+            return res;
+        }
     });
+    console.log("Action : Utilisateur - UPDATE ALL DONE");
+    return "Done";
 };
 
 // -- DELETE
-function actionDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - DELETE");
+async function actionDelete (req) {
+    console.log("Action : Utilisateur - DELETE");
 
-        resolve(process.processDelete(req));
-    });
+    return await process.processDelete(req);
 };
 
 // -- READ
-function actionRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - READ");
+async function actionRead (req) {
+    console.log("Action : Utilisateur - READ");
 
-        resolve(process.processRead(req));
-    });
+    return await process.processRead(req);
 };
 
 // -- LOGIN
@@ -98,4 +80,3 @@ exports.actionUpdateAll = actionUpdateAll;
 exports.actionDelete = actionDelete;
 exports.actionRead = actionRead;
 exports.actionLogin = actionLogin;
-

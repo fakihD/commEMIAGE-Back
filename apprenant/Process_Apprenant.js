@@ -4,131 +4,117 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Apprenant');
+Apprenant = mongoose.model('Apprenant');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Apprenant - FIND ALL");
 
-        Apprenant = mongoose.model('Apprenant');
-        Apprenant.find().then((apprenants)=>{
-        // console.log("Process : Apprenant - FIND ALL : " + apprenants);
+    return await Apprenant.find().then((apprenants)=>{
+        console.log("Process : Apprenant - FIND ALL : " + apprenants);
 
-            resolve(apprenants);
-        },(err)=>{
-            console.log("Process : Apprenant - FIND ALL : Error");
+        return apprenants;
+    },(err)=>{
+        console.log("Process : Apprenant - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - CREATE");
-        console.log("Process : Apprenant - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Apprenant - CREATE");
+    console.log("Process : Apprenant - CREATE :" + req.body.nom);
 
-        Apprenant = mongoose.model('Apprenant');
-        newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, filiere:req.body.filiere, semestre:req.body.semestre});
-        newApprenant.id = newApprenant._id;
+    newApprenant = new Apprenant({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, filiere:req.body.filiere, semestre:req.body.semestre});
+    newApprenant.id = newApprenant._id;
 
-        newApprenant.save().then(()=>{
-            console.log("Process : Apprenant - CREATE : Done");
+    return await newApprenant.save().then(()=>{
+        console.log("Process : Apprenant - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Apprenant - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Apprenant - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - UPDATE");
-        
-        mongoose.model('Apprenant').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedApprenant)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Apprenant - UPDATE");
+    
+    return await Apprenant.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedApprenant)=>{
         if(err){
                 console.log("Process : Apprenant - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
                 console.log("Process : Apprenant - UPDATE : " + JSON.stringify(updatedApprenant));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - DELETE");
-        console.log("Process : Apprenant - DELETE id : " + req.params.id);
-        
-        Apprenant = mongoose.model('Apprenant');
-        Apprenant.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Apprenant - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Apprenant - DELETE");
+    console.log("Process : Apprenant - DELETE id : " + req.params.id);
+    
+    return await Apprenant.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Apprenant - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Apprenant - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Apprenant - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ ID
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - READ");
-        console.log("Process : Apprenant - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Adminstrateur - READ");
+    console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Apprenant').findOne({_id : new ObjectId(req.params.id)}).then((apprenant)=>{
-            if(apprenant){
-                console.log("Process : Apprenant - READ : " + apprenant);
+    Apprenant.findOne({_id : new ObjectId(req.params.id)}).then((apprenant)=>{
+        if(apprenant){
+            console.log("Process : Apprenant - READ : " + apprenant);
 
-                resolve(apprenant);
-            }else{
-                console.log("Process : Apprenant - READ : Inexistant");
+            return apprenant;
+        }else{
+            console.log("Process : Apprenant - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Apprenant - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Apprenant - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ EMAIL
-function processReadEmail (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Apprenant - READ EMAIL");
-        console.log("Process : Apprenant - READ EMAIL : " + req.params.email);
+async function processReadEmail (req) {
+    console.log("Process : Adminstrateur - READ EMAIL");
+    console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
 
-        mongoose.model('Apprenant').findOne({email : req.params.email}).then((apprenant)=>{
-            if(apprenant){
-                console.log("Process : Apprenant - READ EMAIL : " + apprenant);
+    Apprenant.findOne({email : req.params.email}).then((apprenant)=>{
+        if(apprenant){
+            console.log("Process : Apprenant - READ : " + apprenant);
 
-                resolve(apprenant);
-            }else{
-                console.log("Process : Apprenant - READ EMAIL : Inexistant");
+            return apprenant;
+        }else{
+            console.log("Process : Apprenant - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Apprenant - READ EMAIL : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Apprenant - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 

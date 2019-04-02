@@ -4,107 +4,95 @@ ObjectId = mongoose.Types.ObjectId;
 
 // -- Load model needed for the project
 require('./Model_Suivi');
+Suivi = mongoose.model('Suivi');
 
 
 // -- FIND ALL
-function processFindAll () {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Suivi - FIND ALL");
+async function processFindAll () {
+    console.log("Process : Suivi - FIND ALL");
 
-        Suivi = mongoose.model('Suivi');
-        Suivi.find().then((suivis)=>{
-        // console.log("Process : Suivi - FIND ALL : " + suivis);
+    return await Suivi.find().then((suivis)=>{
+        console.log("Process : Suivi - FIND ALL : " + suivis);
 
-            resolve(suivis);
-        },(err)=>{
-            console.log("Process : Suivi - FIND ALL : Error");
+        return suivis;
+    },(err)=>{
+        console.log("Process : Suivi - FIND ALL : Error");
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- CREATE
-function processCreate (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Suivi - CREATE");
-        console.log("Process : Suivi - CREATE :" + req.body.nom);
+async function processCreate (req) {
+    console.log("Process : Suivi - CREATE");
+    console.log("Process : Suivi - CREATE :" + req.body.nom);
 
-        Suivi = mongoose.model('Suivi');
-        newSuivi = new Suivi({alias:req.body.alias, questions:req.body.questions, remarques:req.body.remarques, tuteur:req.body.tuteur, apprenant:req.body.apprenant, module:req.body.module});
-        newSuivi.id = newSuivi._id;
+    newSuivi = new Suivi({alias:req.body.alias, questions:req.body.questions, remarques:req.body.remarques, tuteur:req.body.tuteur, apprenant:req.body.apprenant, suivi:req.body.suivi});
+    newSuivi.id = newSuivi._id;
 
-        newSuivi.save().then(()=>{
-            console.log("Process : Suivi - CREATE : Done");
+    return await newSuivi.save().then(()=>{
+        console.log("Process : Suivi - CREATE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Suivi - CREATE : Error: " + err);
+        return "Done";
+    },(err)=>{
+        console.log("Process : Suivi - CREATE : Error: " + err);
 
-            reject("Erreur");
-        })
-    });
+        return "Erreur";
+    })
 };
 
 // -- UPDATE
-function processUpdate (id, body) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Suivi - UPDATE");
-        
-        mongoose.model('Suivi').updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedSuivi)=>{
+async function processUpdate (id, body) {
+    console.log("Process : Suivi - UPDATE");
+    
+    return await Suivi.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedSuivi)=>{
         if(err){
                 console.log("Process : Suivi - UPDATE : Error");
 
-                reject("Erreur");
+                return "Erreur";
         }else{
-                console.log("Process : Suivi - UPDATE : " + updatedSuivi);
+                console.log("Process : Suivi - UPDATE : " + JSON.stringify(updatedSuivi));
 
-                resolve("Done");
+                return "Done";
         }
-        });
     });
 };
 
 // -- DELETE
-function processDelete (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Suivi - DELETE");
-        console.log("Process : Suivi - DELETE id : " + req.params.id);
-        
-        Suivi = mongoose.model('Suivi');
-        Suivi.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-            console.log("Process : Suivi - DELETE : Done");
+async function processDelete (req) {
+    console.log("Process : Suivi - DELETE");
+    console.log("Process : Suivi - DELETE id : " + req.params.id);
+    
+    return await Suivi.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
+        console.log("Process : Suivi - DELETE : Done");
 
-            resolve("Done");
-        },(err)=>{
-            console.log("Process : Suivi - DELETE : Error");
+        return "Done";
+    },(err)=>{
+        console.log("Process : Suivi - DELETE : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
 // -- READ
-function processRead (req) {
-    return new Promise(function(resolve, reject) {
-        console.log("Process : Suivi - READ");
-        console.log("Process : Suivi - READ id : " + new ObjectId(req.params.id));
+async function processRead (req) {
+    console.log("Process : Suivi - READ");
+    console.log("Process : Suivi - READ id : " + new ObjectId(req.params.id));
 
-        mongoose.model('Suivi').findOne({_id : new ObjectId(req.params.id)}).then((suivi)=>{
-            if(suivi){
-                console.log("Process : Suivi - READ : " + suivi);
+    return await Suivi.findOne({_id : new ObjectId(req.params.id)}).then((suivi)=>{
+        if(suivi){
+            console.log("Process : Suivi - READ : " + suivi);
 
-                resolve(suivi);
-            }else{
-                console.log("Process : Suivi - READ : Inexistant");
+            return suivi;
+        }else{
+            console.log("Process : Suivi - READ : Inexistant");
 
-                reject("Inexistant");
-            }
-        },(err)=>{
-            console.log("Process : Suivi - READ : Error");
+            return "Inexistant";
+        }
+    },(err)=>{
+        console.log("Process : Suivi - READ : Error");
 
-            reject("Erreur");
-        });
+        return "Erreur";
     });
 };
 
