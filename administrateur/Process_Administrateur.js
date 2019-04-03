@@ -79,7 +79,7 @@ async function processRead (req) {
     console.log("Process : Adminstrateur - READ");
     console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
 
-    Administrateur.findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
+    return await Administrateur.findOne({_id : new ObjectId(req.params.id)}).then((administrateur)=>{
         if(administrateur){
             console.log("Process : Administrateur - READ : " + administrateur);
 
@@ -101,7 +101,7 @@ async function processReadEmail (req) {
     console.log("Process : Adminstrateur - READ EMAIL");
     console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
 
-    Administrateur.findOne({email : req.params.email}).then((administrateur)=>{
+    return await Administrateur.findOne({email : req.params.email}).then((administrateur)=>{
         if(administrateur){
             console.log("Process : Administrateur - READ : " + administrateur);
 
