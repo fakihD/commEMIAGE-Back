@@ -23,7 +23,7 @@ async function processFindAll () {
 };
 
 // -- CREATE
-async function processCreate (req) {
+async function processCreate (req, password) {
     console.log("Process : Utilisateur - CREATE");
     console.log("Process : Utilisateur - CREATE :" + req.body.nom);
 
@@ -101,10 +101,10 @@ async function processLogin (email, password) {
     console.log("Process : Utilisateur - LOGIN");
     console.log("Process : Utilisateur - LOGIN email : " + email);
 
-    return await Utilisateur.findOne({email : email, password : password}).then(utilisateur => {
+    return await Utilisateur.findOne({email : email, password : password}).then(async utilisateur => {
         if(utilisateur){
             // --- Generate token
-            utilisateur.generateToken().then((utilisateurWebFormat)=>{
+            return await utilisateur.generateToken().then((utilisateurWebFormat)=>{
                 console.log("Process : Utilisateur - LOGIN : " + utilisateurWebFormat);
 
                 return utilisateurWebFormat;
