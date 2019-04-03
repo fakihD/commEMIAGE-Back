@@ -14,7 +14,18 @@ async function actionFindAll () {
 async function actionCreate (req) {
     console.log("Action : Utilisateur - CREATE");
 
-    return await process.processCreate(req);
+    password = req.body.password;
+
+    bcrypt.hash(password, 10, async function (err, hash){
+        if (err) {
+            console.log("Action : Utilisateur - CREATE - hashError : " + err);
+            return await next(err);
+        }
+        console.log("Action : Utilisateur - CREATE - hash : " + hash);
+        password = await hash;
+    })
+
+    return await process.processCreate(req, password);
 };
 
 // -- UPDATE
@@ -56,21 +67,19 @@ async function actionRead (req) {
 };
 
 // -- LOGIN
-function actionLogin (email, password) {
-    return new Promise(function(resolve, reject) {
-        console.log("Action : Utilisateur - LOGIN");
+async function actionLogin (email, password) {
+    console.log("Action : Utilisateur - LOGIN");
 
-        bcrypt.hash(password, 10, function (err, hash){
-            if (err) {
-                console.log("Utilisateur - LOGIN - hashError : " + err);
-                return next(err);
-            }
-            console.log("Utilisateur - LOGIN - hash : " + hash);
-            password = hash;
-        })
+    bcrypt.hash(password, 10, async function (err, hash){
+        if (err) {
+            console.log("Action : Utilisateur - LOGIN - hashError : " + err);
+            return await next(err);
+        }
+        console.log("Action : Utilisateur - LOGIN - hash : " + hash);
+        password = await hash;
+    })
 
-        resolve(process.processLogin(email, password));
-    });
+    return await process.processLogin(email, password);
 };
 
 exports.actionFindAll = actionFindAll;
