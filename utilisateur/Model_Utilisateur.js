@@ -21,6 +21,7 @@ let UtilisateurSchema = new Schema({
   },
   password: {
     type: String,
+    default : 'bienvenue',
     required: true,
   },
   token : String

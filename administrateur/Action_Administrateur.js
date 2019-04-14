@@ -2,62 +2,127 @@
 const process = require('./Process_Administrateur');
 
 // -- FIND ALL
-async function actionFindAll () {
+function actionFindAll (req, res) {
     console.log("Action : Administrateur - FIND ALL");
 
-    return await process.processFindAll();
+    try{
+        process.processFindAll().then((callback) => {
+            console.log("Process : Administrateur - FIND ALL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - FIND ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- CREATE
-async function actionCreate (req) {
+function actionCreate (req, res) {
     console.log("Action : Administrateur - CREATE");
 
-    return await process.processCreate(req);
+    try{
+        process.processCreate(req).then((callback) => {
+            console.log("Process : Administrateur - CREATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - CREATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE
-async function actionUpdate (req) {
+function actionUpdate (req, res) {
     console.log("Action : Administrateur - UPDATE");
 
-    return await process.processUpdate(req.params.id, req.body);
+    try{
+        process.processUpdate(req.params.id, req.body).then((callback) => {
+            console.log("Process : Administrateur - UPDATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - UPDATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE ALL
-async function actionUpdateAll (req) {
+function actionUpdateAll (req, res) {
     console.log("Action : Administrateur - UPDATE ALL");
 
-    let res = "";
-    req.body.administrateur.forEach(async function(administrateur){
-        res  = await process.processUpdate(administrateur._id, administrateur);
-        console.log("Action : Administrateur - UPDATE ALL IN");
-        if( res == "Erreur"){
-            console.log("Action : Administrateur - UPDATE ALL ERR");
-            return res;
-        }
-    });
-    console.log("Action : Administrateur - UPDATE ALL DONE");
-    return "Done";
+    try{
+        let res = "";
+        req.body.administrateur.forEach(function(administrateur){
+            process.processUpdate(administrateur._id, administrateur).then((callback) => {
+                console.log("Process : Administrateur - UPDATE : " + callback);
+                res.send(callback);
+            });
+        }).then(() => {
+            console.log("Action : Administrateur - UPDATE ALL DONE");
+            res.send("Done");
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - UPDATE ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- DELETE
-async function actionDelete (req) {
+function actionDelete (req, res) {
     console.log("Action : Administrateur - DELETE");
 
-    return await process.processDelete(req);
+    try{
+        process.processDelete(req).then((callback) => {
+            console.log("Process : Administrateur - DELETE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - DELETE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ ID
-async function actionRead (req) {
+function actionRead (req, res) {
     console.log("Action : Administrateur - READ ID");
+    
+    try{
+        process.processRead(req).then((callback) => {
+            console.log("Process : Administrateur - READ ID : " + callback);
 
-    return await process.processRead(req);
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - READ ID : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ EMAIL
-async function actionReadEmail (req) {
+function actionReadEmail (req, res) {
     console.log("Action : Administrateur - READ EMAIL");
 
-    return await process.processReadEmail(req);
+    try{
+        process.processReadEmail(req).then((callback) => {
+            console.log("Process : Administrateur - READ EMAIL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Administrateur - READ  EMAIL: Error - " + err);
+
+        res.send(err);
+    }
 };
 
 exports.actionFindAll = actionFindAll;

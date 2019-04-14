@@ -22,7 +22,6 @@ ModuleSchema = new Schema({
     },
     semestre : [{
         nom : String,
-        moduleSelected : Number,
         dateDebut : {
             type: Date,
         },
@@ -32,7 +31,12 @@ ModuleSchema = new Schema({
         tuteur : {
             nom : String,
             prenom : String
-        }
+        },
+        apprenant : [{
+            apprenantId : String,
+            nom : String,
+            prenom : String
+        }]
     }]
 });
 

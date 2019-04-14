@@ -2,55 +2,110 @@
 const process = require('./Process_Module');
 
 // -- FIND ALL
-async function actionFindAll () {
+function actionFindAll (req, res) {
     console.log("Action : Module - FIND ALL");
 
-    return await process.processFindAll();
+    try{
+        process.processFindAll().then((callback) => {
+            console.log("Process : Module - FIND ALL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Module - FIND ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- CREATE
-async function actionCreate (req) {
+function actionCreate (req, res) {
     console.log("Action : Module - CREATE");
 
-    return await process.processCreate(req);
+    try{
+        process.processCreate(req).then((callback) => {
+            console.log("Process : Module - CREATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Module - CREATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE
-async function actionUpdate (req) {
+function actionUpdate (req, res) {
     console.log("Action : Module - UPDATE");
 
-    return await process.processUpdate(req.params.id, req.body);
+    try{
+        process.processUpdate(req.params.id, req.body).then((callback) => {
+            console.log("Process : Module - UPDATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Module - UPDATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE ALL
-async function actionUpdateAll (req) {
+function actionUpdateAll (req, res) {
     console.log("Action : Module - UPDATE ALL");
 
-    let res = "";
-    req.body.module.forEach(async function(module){
-        res  = await process.processUpdate(module._id, module);
-        console.log("Action : Module - UPDATE ALL IN");
-        if( res == "Erreur"){
-            console.log("Action : Module - UPDATE ALL ERR");
-            return res;
-        }
-    });
-    console.log("Action : Module - UPDATE ALL DONE");
-    return "Done";
+    try{
+        let res = "";
+        req.body.module.forEach(function(module){
+            process.processUpdate(module._id, module).then((callback) => {
+                console.log("Process : Module - UPDATE : " + callback);
+                res.send(callback);
+            });
+        }).then(() => {
+            console.log("Action : Module - UPDATE ALL DONE");
+            res.send("Done");
+        });
+    } catch(err) {
+        console.log("Process : Module - UPDATE ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- DELETE
-async function actionDelete (req) {
+function actionDelete (req, res) {
     console.log("Action : Module - DELETE");
 
-    return await process.processDelete(req);
+    try{
+        process.processDelete(req).then((callback) => {
+            console.log("Process : Module - DELETE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Module - DELETE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ
-async function actionRead (req) {
+function actionRead (req, res) {
     console.log("Action : Module - READ");
 
-    return await process.processRead(req);
+    try{
+        process.processRead(req).then((callback) => {
+            console.log("Process : Module - READ : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Module - READ : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 exports.actionFindAll = actionFindAll;

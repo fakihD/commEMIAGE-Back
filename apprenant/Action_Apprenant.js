@@ -2,62 +2,127 @@
 const process = require('./Process_Apprenant');
 
 // -- FIND ALL
-async function actionFindAll () {
+function actionFindAll (req, res) {
     console.log("Action : Apprenant - FIND ALL");
 
-    return await process.processFindAll();
+    try{
+        process.processFindAll().then((callback) => {
+            console.log("Process : Apprenant - FIND ALL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - FIND ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- CREATE
-async function actionCreate (req) {
+function actionCreate (req, res) {
     console.log("Action : Apprenant - CREATE");
 
-    return await process.processCreate(req);
+    try{
+        process.processCreate(req).then((callback) => {
+            console.log("Process : Apprenant - CREATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - CREATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE
-async function actionUpdate (req) {
+function actionUpdate (req, res) {
     console.log("Action : Apprenant - UPDATE");
 
-    return await process.processUpdate(req.params.id, req.body);
+    try{
+        process.processUpdate(req.params.id, req.body).then((callback) => {
+            console.log("Process : Apprenant - UPDATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - UPDATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE ALL
-async function actionUpdateAll (req) {
+function actionUpdateAll (req, res) {
     console.log("Action : Apprenant - UPDATE ALL");
 
-    let res = "";
-    req.body.apprenant.forEach(async function(apprenant){
-        res  = await process.processUpdate(apprenant._id, apprenant);
-        console.log("Action : Apprenant - UPDATE ALL IN");
-        if( res == "Erreur"){
-            console.log("Action : Apprenant - UPDATE ALL ERR");
-            return res;
-        }
-    });
-    console.log("Action : Apprenant - UPDATE ALL DONE");
-    return "Done";
+    try{
+        let res = "";
+        req.body.apprenant.forEach(function(apprenant){
+            process.processUpdate(apprenant._id, apprenant).then((callback) => {
+                console.log("Process : Apprenant - UPDATE : " + callback);
+                res.send(callback);
+            });
+        }).then(() => {
+            console.log("Action : Apprenant - UPDATE ALL DONE");
+            res.send("Done");
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - UPDATE ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- DELETE
-async function actionDelete (req) {
+function actionDelete (req, res) {
     console.log("Action : Apprenant - DELETE");
 
-    return await process.processDelete(req);
+    try{
+        process.processDelete(req).then((callback) => {
+            console.log("Process : Apprenant - DELETE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - DELETE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ ID
-async function actionRead (req) {
+function actionRead (req, res) {
     console.log("Action : Apprenant - READ ID");
+    
+    try{
+        process.processRead(req).then((callback) => {
+            console.log("Process : Apprenant - READ ID : " + callback);
 
-    return await process.processRead(req);
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - READ ID : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ EMAIL
-async function actionReadEmail (req) {
+function actionReadEmail (req, res) {
     console.log("Action : Apprenant - READ EMAIL");
 
-    return await process.processReadEmail(req);
+    try{
+        process.processReadEmail(req).then((callback) => {
+            console.log("Process : Apprenant - READ EMAIL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Apprenant - READ EMAIL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 exports.actionFindAll = actionFindAll;
