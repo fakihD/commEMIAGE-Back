@@ -11,111 +11,45 @@ Tuteur = mongoose.model('Tuteur');
 async function processFindAll () {
     console.log("Process : Tuteur - FIND ALL");
 
-    return await Tuteur.find().then((tuteurs)=>{
-        console.log("Process : Tuteur - FIND ALL : " + tuteurs);
-
-        return tuteurs;
-    },(err)=>{
-        console.log("Process : Tuteur - FIND ALL : Error");
-
-        return "Erreur";
-    })
+    return await Tuteur.find();
 };
 
 // -- CREATE
 async function processCreate (req) {
-    console.log("Process : Tuteur - CREATE");
     console.log("Process : Tuteur - CREATE :" + req.body.nom);
 
     newTuteur = new Tuteur({nom:req.body.nom, prenom:req.body.prenom, adresse:req.body.adresse, email:req.body.email, module:req.body.module});
     newTuteur.id = newTuteur._id;
 
-    return await newTuteur.save().then(()=>{
-        console.log("Process : Tuteur - CREATE : Done");
-
-        return "Done";
-    },(err)=>{
-        console.log("Process : Tuteur - CREATE : Error: " + err);
-
-        return "Erreur";
-    })
+    return await newTuteur.save();
 };
 
 // -- UPDATE
 async function processUpdate (id, body) {
-    console.log("Process : Tuteur - UPDATE");
+    console.log("Process : Tuteur - UPDATE id : " + id);
     
-    return await Tuteur.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedTuteur)=>{
-        if(err){
-                console.log("Process : Tuteur - UPDATE : Error");
-
-                return "Erreur";
-        }else{
-                console.log("Process : Tuteur - UPDATE : " + JSON.stringify(updatedTuteur));
-
-                return "Done";
-        }
-    });
+    return await Tuteur.updateOne({_id : new ObjectId(id)}, {$set : body});
 };
 
 // -- DELETE
 async function processDelete (req) {
-    console.log("Process : Tuteur - DELETE");
     console.log("Process : Tuteur - DELETE id : " + req.params.id);
     
-    return await Tuteur.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-        console.log("Process : Tuteur - DELETE : Done");
-
-        return "Done";
-    },(err)=>{
-        console.log("Process : Tuteur - DELETE : Error");
-
-        return "Erreur";
-    });
+    return await Tuteur.find({_id : new ObjectId(req.params.id)}).deleteOne();
 };
 
 // -- READ ID
 async function processRead (req) {
-    console.log("Process : Adminstrateur - READ");
     console.log("Process : Adminstrateur - READ id : " + new ObjectId(req.params.id));
 
-    return await Tuteur.findOne({_id : new ObjectId(req.params.id)}).then((tuteur)=>{
-        if(tuteur){
-            console.log("Process : Tuteur - READ : " + tuteur);
-
-            return tuteur;
-        }else{
-            console.log("Process : Tuteur - READ : Inexistant");
-
-            return "Inexistant";
-        }
-    },(err)=>{
-        console.log("Process : Tuteur - READ : Error");
-
-        return "Erreur";
-    });
+    return await Adminstrateur.findOne({_id : new ObjectId(req.params.id)});
 };
 
 // -- READ EMAIL
 async function processReadEmail (req) {
-    console.log("Process : Adminstrateur - READ EMAIL");
     console.log("Process : Adminstrateur - READ EMAIL : " + req.params.email);
 
-    return await Tuteur.findOne({email : req.params.email}).then((tuteur)=>{
-        if(tuteur){
-            console.log("Process : Tuteur - READ : " + tuteur);
-
-            return tuteur;
-        }else{
-            console.log("Process : Tuteur - READ : Inexistant");
-
-            return "Inexistant";
-        }
-    },(err)=>{
-        console.log("Process : Tuteur - READ : Error");
-
-        return "Erreur";
-    });
+    return await Tuteur.findOne({email : req.params.email});
 };
 
 exports.processFindAll = processFindAll;

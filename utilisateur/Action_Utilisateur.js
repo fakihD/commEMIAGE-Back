@@ -4,82 +4,146 @@ const bcrypt = require('bcrypt');
 const process = require('./Process_Utilisateur');
 
 // -- FIND ALL
-async function actionFindAll () {
+function actionFindAll (req, res) {
     console.log("Action : Utilisateur - FIND ALL");
 
-    return await process.processFindAll();
+    try{
+        process.processFindAll().then((callback) => {
+            console.log("Process : Utilisateur - FIND ALL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - FIND ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- CREATE
-async function actionCreate (req) {
+async function actionCreate (req, res) {
     console.log("Action : Utilisateur - CREATE");
 
-    password = req.body.password;
+    try{        
+        password = await new Promise((resolve, reject) => {
+            bcrypt.hash(req.body.password, 10, async function (err, hash){
+                console.log("Action : Utilisateur - LOGIN - hash : " + hash);
+                resolve(hash);
+            });
+        })
 
-    bcrypt.hash(password, 10, async function (err, hash){
-        if (err) {
-            console.log("Action : Utilisateur - CREATE - hashError : " + err);
-            return await next(err);
-        }
-        console.log("Action : Utilisateur - CREATE - hash : " + hash);
-        password = await hash;
-    })
+        process.processCreate(req, password).then((callback) => {
+            console.log("Process : Utilisateur - CREATE : " + callback);
 
-    return await process.processCreate(req, password);
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - CREATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE
-async function actionUpdate (req) {
+function actionUpdate (req, res) {
     console.log("Action : Utilisateur - UPDATE");
 
-    return await process.processUpdate(req.params.id, req.body);
+    try{
+        process.processUpdate(req.params.id, req.body).then((callback) => {
+            console.log("Process : Utilisateur - UPDATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - UPDATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE ALL
-async function actionUpdateAll (req) {
+function actionUpdateAll (req, res) {
     console.log("Action : Utilisateur - UPDATE ALL");
 
-    let res = "";
-    req.body.utilisateur.forEach(async function(utilisateur){
-        res  = await process.processUpdate(utilisateur._id, utilisateur);
-        console.log("Action : Utilisateur - UPDATE ALL IN");
-        if( res == "Erreur"){
-            console.log("Action : Utilisateur - UPDATE ALL ERR");
-            return res;
-        }
-    });
-    console.log("Action : Utilisateur - UPDATE ALL DONE");
-    return "Done";
+    try{
+        let res = "";
+        req.body.utilisateur.forEach(function(utilisateur){
+            process.processUpdate(utilisateur._id, utilisateur).then((callback) => {
+                console.log("Process : Utilisateur - UPDATE : " + callback);
+                res.send(callback);
+            });
+        }).then(() => {
+            console.log("Action : Utilisateur - UPDATE ALL DONE");
+            res.send("Done");
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - UPDATE ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- DELETE
-async function actionDelete (req) {
+function actionDelete (req, res) {
     console.log("Action : Utilisateur - DELETE");
 
-    return await process.processDelete(req);
+    try{
+        process.processDelete(req).then((callback) => {
+            console.log("Process : Utilisateur - DELETE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - DELETE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ
-async function actionRead (req) {
+function actionRead (req, res) {
     console.log("Action : Utilisateur - READ");
 
-    return await process.processRead(req);
+    try{
+        process.processRead(req).then((callback) => {
+            console.log("Process : Utilisateur - READ : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - READ : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- LOGIN
-async function actionLogin (email, password) {
+async function actionLogin (req, res) {
     console.log("Action : Utilisateur - LOGIN");
 
-    bcrypt.hash(password, 10, async function (err, hash){
-        if (err) {
-            console.log("Action : Utilisateur - LOGIN - hashError : " + err);
-            return await next(err);
-        }
-        console.log("Action : Utilisateur - LOGIN - hash : " + hash);
-        password = await hash;
-    })
+    try {
+        process.processLogin(req.params.email).then(async function(callback) {
+            console.log("Process : Utilisateur - LOGIN : " + callback);
 
-    return await process.processLogin(email, password);
+            rslt = await new Promise((resolve, reject) => {
+                bcrypt.compare(req.params.password, callback.password, function(err, rslt){
+                    console.log("Action : Utilisateur - LOGIN - rslt : " + rslt);
+                    resolve(rslt);
+                });
+            })
+
+            if(rslt) {
+                res.send(callback);
+            } else {
+                console.log("Process : Utilisateur - LOGIN : Error - Incorrecte");
+                res.send("Erreur");
+            }
+        });
+    } catch(err) {
+        console.log("Process : Utilisateur - LOGIN : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 exports.actionFindAll = actionFindAll;

@@ -11,89 +11,38 @@ Filiere = mongoose.model('Filiere');
 async function processFindAll () {
     console.log("Process : Filiere - FIND ALL");
 
-    return await Filiere.find().then((filieres)=>{
-        console.log("Process : Filiere - FIND ALL : " + filieres);
-
-        return filieres;
-    },(err)=>{
-        console.log("Process : Filiere - FIND ALL : Error");
-
-        return "Erreur";
-    })
+    return await Filiere.find();
 };
 
 // -- CREATE
 async function processCreate (req) {
-    console.log("Process : Filiere - CREATE");
     console.log("Process : Filiere - CREATE :" + req.body.nom);
 
-    newFiliere = new Filiere({nom:req.body.nom, description:req.body.description, filiere:req.body.filiere});
+    newFiliere = new Filiere({nom:req.body.nom, description:req.body.description, module:req.body.module});
     newFiliere.id = newFiliere._id;
 
-    return await newFiliere.save().then(()=>{
-        console.log("Process : Filiere - CREATE : Done");
-
-        return "Done";
-    },(err)=>{
-        console.log("Process : Filiere - CREATE : Error: " + err);
-
-        return "Erreur";
-    })
+    return await newFiliere.save();
 };
 
 // -- UPDATE
 async function processUpdate (id, body) {
-    console.log("Process : Filiere - UPDATE");
+    console.log("Process : Filiere - UPDATE id : " + id);
     
-    return await Filiere.updateOne({_id : new ObjectId(id)}, {$set : body}, (err, updatedFiliere)=>{
-        if(err){
-                console.log("Process : Filiere - UPDATE : Error");
-
-                return "Erreur";
-        }else{
-                console.log("Process : Filiere - UPDATE : " + JSON.stringify(updatedFiliere));
-
-                return "Done";
-        }
-    });
+    return await Filiere.updateOne({_id : new ObjectId(id)}, {$set : body});
 };
 
 // -- DELETE
 async function processDelete (req) {
-    console.log("Process : Filiere - DELETE");
     console.log("Process : Filiere - DELETE id : " + req.params.id);
     
-    return await Filiere.find({_id : new ObjectId(req.params.id)}).deleteOne().then(()=>{
-        console.log("Process : Filiere - DELETE : Done");
-
-        return "Done";
-    },(err)=>{
-        console.log("Process : Filiere - DELETE : Error");
-
-        return "Erreur";
-    });
+    return await Filiere.find({_id : new ObjectId(req.params.id)}).deleteOne();
 };
 
 // -- READ
 async function processRead (req) {
-    console.log("Process : Filiere - READ");
     console.log("Process : Filiere - READ id : " + new ObjectId(req.params.id));
 
-    return await Filiere.findOne({_id : new ObjectId(req.params.id)}).then((filiere)=>{
-        if(filiere){
-            console.log("Process : Filiere - READ : " + filiere);
-
-            return filiere;
-        }else{
-            console.log("Process : Filiere - READ : Inexistant");
-
-            return "Inexistant";
-        }
-    },(err)=>{
-        console.log("Process : Filiere - READ : Error");
-
-        return "Erreur";
-    });
+    return await Filiere.findOne({_id : new ObjectId(req.params.id)});
 };
 
 exports.processFindAll = processFindAll;

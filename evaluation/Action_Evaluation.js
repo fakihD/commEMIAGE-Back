@@ -2,55 +2,110 @@
 const process = require('./Process_Evaluation');
 
 // -- FIND ALL
-async function actionFindAll () {
+function actionFindAll (req, res) {
     console.log("Action : Evaluation - FIND ALL");
 
-    return await process.processFindAll();
+    try{
+        process.processFindAll().then((callback) => {
+            console.log("Process : Evaluation - FIND ALL : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - FIND ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- CREATE
-async function actionCreate (req) {
+function actionCreate (req, res) {
     console.log("Action : Evaluation - CREATE");
 
-    return await process.processCreate(req);
+    try{
+        process.processCreate(req).then((callback) => {
+            console.log("Process : Evaluation - CREATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - CREATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE
-async function actionUpdate (req) {
+function actionUpdate (req, res) {
     console.log("Action : Evaluation - UPDATE");
 
-    return await process.processUpdate(req.params.id, req.body);
+    try{
+        process.processUpdate(req.params.id, req.body).then((callback) => {
+            console.log("Process : Evaluation - UPDATE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - UPDATE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- UPDATE ALL
-async function actionUpdateAll (req) {
+function actionUpdateAll (req, res) {
     console.log("Action : Evaluation - UPDATE ALL");
 
-    let res = "";
-    req.body.evaluation.forEach(async function(evaluation){
-        res  = await process.processUpdate(evaluation._id, evaluation);
-        console.log("Action : Evaluation - UPDATE ALL IN");
-        if( res == "Erreur"){
-            console.log("Action : Evaluation - UPDATE ALL ERR");
-            return res;
-        }
-    });
-    console.log("Action : Evaluation - UPDATE ALL DONE");
-    return "Done";
+    try{
+        let res = "";
+        req.body.evaluation.forEach(function(evaluation){
+            process.processUpdate(evaluation._id, evaluation).then((callback) => {
+                console.log("Process : Evaluation - UPDATE : " + callback);
+                res.send(callback);
+            });
+        }).then(() => {
+            console.log("Action : Evaluation - UPDATE ALL DONE");
+            res.send("Done");
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - UPDATE ALL : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- DELETE
-async function actionDelete (req) {
+function actionDelete (req, res) {
     console.log("Action : Evaluation - DELETE");
 
-    return await process.processDelete(req);
+    try{
+        process.processDelete(req).then((callback) => {
+            console.log("Process : Evaluation - DELETE : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - DELETE : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 // -- READ
-async function actionRead (req) {
+function actionRead (req, res) {
     console.log("Action : Evaluation - READ");
 
-    return await process.processRead(req);
+    try{
+        process.processRead(req).then((callback) => {
+            console.log("Process : Evaluation - READ : " + callback);
+
+            res.send(callback);
+        });
+    } catch(err) {
+        console.log("Process : Evaluation - READ : Error - " + err);
+
+        res.send(err);
+    }
 };
 
 exports.actionFindAll = actionFindAll;
