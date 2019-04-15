@@ -49,7 +49,7 @@ function actionUpdate (req, res) {
     console.log("Action : Utilisateur - UPDATE");
 
     try{
-        process.processUpdate(req.params.id, req.body).then((callback) => {
+        process.processUpdate(req.params.id, req.body.utilisateur).then((callback) => {
             console.log("Process : Utilisateur - UPDATE : " + callback);
 
             res.send(callback);
