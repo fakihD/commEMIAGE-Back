@@ -40,7 +40,7 @@ function actionUpdate (req, res) {
     console.log("Action : Apprenant - UPDATE");
 
     try{
-        process.processUpdate(req.params.id, req.body).then((callback) => {
+        process.processUpdate(req.params.id, req.body.apprenant).then((callback) => {
             console.log("Process : Apprenant - UPDATE : " + callback);
 
             res.send(callback);
