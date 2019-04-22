@@ -57,7 +57,6 @@ function actionUpdateAll (req, res) {
     console.log("Action : Module - UPDATE ALL");
 
     try{
-        let res = "";
         req.body.module.forEach(function(module){
             process.processUpdate(module._id, module).then((callback) => {
                 console.log("Process : Module - UPDATE : " + callback);

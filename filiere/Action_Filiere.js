@@ -57,7 +57,6 @@ function actionUpdateAll (req, res) {
     console.log("Action : Filiere - UPDATE ALL");
 
     try{
-        let res = "";
         req.body.filiere.forEach(function(filiere){
             process.processUpdate(filiere._id, filiere).then((callback) => {
                 console.log("Process : Filiere - UPDATE : " + callback);

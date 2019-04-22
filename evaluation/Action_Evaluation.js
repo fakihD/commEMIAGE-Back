@@ -57,7 +57,6 @@ function actionUpdateAll (req, res) {
     console.log("Action : Evaluation - UPDATE ALL");
 
     try{
-        let res = "";
         req.body.evaluation.forEach(function(evaluation){
             process.processUpdate(evaluation._id, evaluation).then((callback) => {
                 console.log("Process : Evaluation - UPDATE : " + callback);
