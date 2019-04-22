@@ -57,7 +57,6 @@ function actionUpdateAll (req, res) {
     console.log("Action : Tuteur - UPDATE ALL");
 
     try{
-        let res = "";
         req.body.tuteur.forEach(function(tuteur){
             process.processUpdate(tuteur._id, tuteur).then((callback) => {
                 console.log("Process : Tuteur - UPDATE : " + callback);

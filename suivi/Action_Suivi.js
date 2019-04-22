@@ -57,7 +57,6 @@ function actionUpdateAll (req, res) {
     console.log("Action : Suivi - UPDATE ALL");
 
     try{
-        let res = "";
         req.body.suivi.forEach(function(suivi){
             process.processUpdate(suivi._id, suivi).then((callback) => {
                 console.log("Process : Suivi - UPDATE : " + callback);
