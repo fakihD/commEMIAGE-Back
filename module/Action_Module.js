@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Module - FIND ALL : " + callback);
+            console.log("Process : Module - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Module - CREATE : " + callback);
+            console.log("Process : Module - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.module).then((callback) => {
-            console.log("Process : Module - UPDATE : " + callback);
+            console.log("Process : Module - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -59,8 +59,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.module.forEach(function(module){
             process.processUpdate(module._id, module).then((callback) => {
-                console.log("Process : Module - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Module - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Module - UPDATE ALL DONE");
@@ -79,7 +78,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Module - DELETE : " + callback);
+            console.log("Process : Module - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -96,7 +95,7 @@ function actionRead (req, res) {
 
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Module - READ : " + callback);
+            console.log("Process : Module - READ : " + JSON.stringify(callback));
 
             res.send(callback);
         });

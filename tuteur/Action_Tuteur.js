@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Tuteur - FIND ALL : " + callback);
+            console.log("Process : Tuteur - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Tuteur - CREATE : " + callback);
+            console.log("Process : Tuteur - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.tuteur).then((callback) => {
-            console.log("Process : Tuteur - UPDATE : " + callback);
+            console.log("Process : Tuteur - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -59,8 +59,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.tuteur.forEach(function(tuteur){
             process.processUpdate(tuteur._id, tuteur).then((callback) => {
-                console.log("Process : Tuteur - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Tuteur - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Tuteur - UPDATE ALL DONE");
@@ -79,7 +78,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Tuteur - DELETE : " + callback);
+            console.log("Process : Tuteur - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -96,7 +95,7 @@ function actionRead (req, res) {
     
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Tuteur - READ ID : " + callback);
+            console.log("Process : Tuteur - READ ID : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -113,7 +112,7 @@ function actionReadEmail (req, res) {
 
     try{
         process.processReadEmail(req).then((callback) => {
-            console.log("Process : Tuteur - READ EMAIL : " + callback);
+            console.log("Process : Tuteur - READ EMAIL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
