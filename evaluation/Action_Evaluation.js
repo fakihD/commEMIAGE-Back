@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Evaluation - FIND ALL : " + callback);
+            console.log("Process : Evaluation - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Evaluation - CREATE : " + callback);
+            console.log("Process : Evaluation - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.evaluation).then((callback) => {
-            console.log("Process : Evaluation - UPDATE : " + callback);
+            console.log("Process : Evaluation - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -59,8 +59,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.evaluation.forEach(function(evaluation){
             process.processUpdate(evaluation._id, evaluation).then((callback) => {
-                console.log("Process : Evaluation - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Evaluation - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Evaluation - UPDATE ALL DONE");
@@ -79,7 +78,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Evaluation - DELETE : " + callback);
+            console.log("Process : Evaluation - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -96,7 +95,7 @@ function actionRead (req, res) {
 
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Evaluation - READ : " + callback);
+            console.log("Process : Evaluation - READ : " + JSON.stringify(callback));
 
             res.send(callback);
         });

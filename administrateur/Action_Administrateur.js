@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Administrateur - FIND ALL : " + callback);
+            console.log("Process : Administrateur - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Administrateur - CREATE : " + callback);
+            console.log("Process : Administrateur - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.administrateur).then((callback) => {
-            console.log("Process : Administrateur - UPDATE : " + callback);
+            console.log("Process : Administrateur - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -60,8 +60,7 @@ function actionUpdateAll (req, res) {
         let res = "";
         req.body.administrateur.forEach(function(administrateur){
             process.processUpdate(administrateur._id, administrateur).then((callback) => {
-                console.log("Process : Administrateur - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Administrateur - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Administrateur - UPDATE ALL DONE");
@@ -80,7 +79,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Administrateur - DELETE : " + callback);
+            console.log("Process : Administrateur - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -97,7 +96,7 @@ function actionRead (req, res) {
     
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Administrateur - READ ID : " + callback);
+            console.log("Process : Administrateur - READ ID : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -114,7 +113,7 @@ function actionReadEmail (req, res) {
 
     try{
         process.processReadEmail(req).then((callback) => {
-            console.log("Process : Administrateur - READ EMAIL : " + callback);
+            console.log("Process : Administrateur - READ EMAIL : " + JSON.stringify(callback));
 
             res.send(callback);
         });

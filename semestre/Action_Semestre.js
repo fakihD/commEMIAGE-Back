@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Semestre - FIND ALL : " + callback);
+            console.log("Process : Semestre - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Semestre - CREATE : " + callback);
+            console.log("Process : Semestre - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.semestre).then((callback) => {
-            console.log("Process : Semestre - UPDATE : " + callback);
+            console.log("Process : Semestre - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -59,8 +59,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.semestre.forEach(function(semestre){
             process.processUpdate(semestre._id, semestre).then((callback) => {
-                console.log("Process : Semestre - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Semestre - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Semestre - UPDATE ALL DONE");
@@ -79,7 +78,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Semestre - DELETE : " + callback);
+            console.log("Process : Semestre - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -96,7 +95,7 @@ function actionRead (req, res) {
 
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Semestre - READ : " + callback);
+            console.log("Process : Semestre - READ : " + JSON.stringify(callback));
 
             res.send(callback);
         });

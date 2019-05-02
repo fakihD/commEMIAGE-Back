@@ -7,7 +7,7 @@ function actionFindAll (req, res) {
 
     try{
         process.processFindAll().then((callback) => {
-            console.log("Process : Suivi - FIND ALL : " + callback);
+            console.log("Process : Suivi - FIND ALL : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -24,7 +24,7 @@ function actionCreate (req, res) {
 
     try{
         process.processCreate(req).then((callback) => {
-            console.log("Process : Suivi - CREATE : " + callback);
+            console.log("Process : Suivi - CREATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -41,7 +41,7 @@ function actionUpdate (req, res) {
 
     try{
         process.processUpdate(req.params.id, req.body.suivi).then((callback) => {
-            console.log("Process : Suivi - UPDATE : " + callback);
+            console.log("Process : Suivi - UPDATE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -59,8 +59,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.suivi.forEach(function(suivi){
             process.processUpdate(suivi._id, suivi).then((callback) => {
-                console.log("Process : Suivi - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Suivi - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Suivi - UPDATE ALL DONE");
@@ -79,7 +78,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Suivi - DELETE : " + callback);
+            console.log("Process : Suivi - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -96,7 +95,7 @@ function actionRead (req, res) {
 
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Suivi - READ : " + callback);
+            console.log("Process : Suivi - READ : " + JSON.stringify(callback));
 
             res.send(callback);
         });

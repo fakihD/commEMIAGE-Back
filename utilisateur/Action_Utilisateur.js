@@ -68,8 +68,7 @@ function actionUpdateAll (req, res) {
     try{
         req.body.utilisateur.forEach(function(utilisateur){
             process.processUpdate(utilisateur._id, utilisateur).then((callback) => {
-                console.log("Process : Utilisateur - UPDATE : " + callback);
-                res.send(callback);
+                console.log("Process : Utilisateur - UPDATE : " + JSON.stringify(callback));
             });
         }).then(() => {
             console.log("Action : Utilisateur - UPDATE ALL DONE");
@@ -88,7 +87,7 @@ function actionDelete (req, res) {
 
     try{
         process.processDelete(req).then((callback) => {
-            console.log("Process : Utilisateur - DELETE : " + callback);
+            console.log("Process : Utilisateur - DELETE : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -105,7 +104,7 @@ function actionRead (req, res) {
 
     try{
         process.processRead(req).then((callback) => {
-            console.log("Process : Utilisateur - READ : " + callback);
+            console.log("Process : Utilisateur - READ : " + JSON.stringify(callback));
 
             res.send(callback);
         });
@@ -122,11 +121,11 @@ async function actionLogin (req, res) {
 
     try {
         process.processLogin(req.params.email).then(async function(callback) {
-            console.log("Process : Utilisateur - LOGIN : " + callback);
+            console.log("Process : Utilisateur - LOGIN : " + JSON.stringify(callback));
 
             rslt = await new Promise((resolve, reject) => {
                 bcrypt.compare(req.params.password, callback.password, function(err, rslt){
-                    console.log("Action : Utilisateur - LOGIN - rslt : " + rslt);
+                    console.log("Action : Utilisateur - LOGIN - rslt : " + JSON.stringify(rslt));
                     resolve(rslt);
                 });
             })
